@@ -1,8 +1,11 @@
 PyCleverAlgorithms
 =================
 
-h1. CleverAlgorithms in Python
+## CleverAlgorithms in Python
 
-h2. Overview
+### Overview
 
-This project is for porting Ruby code in *Clever Algorithms: Nature-Inspired Programming Recipes* to Python.
+This project is for porting Ruby code in *Clever Algorithms: Nature-Inspired Programming Recipes* to Python, 
+both algorithm and test code.
+
+Origin ClearAlgorithms repository : https://github.com/jbrownlee/CleverAlgorithms
