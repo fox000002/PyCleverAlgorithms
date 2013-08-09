@@ -18,6 +18,14 @@ def cost(permutation, cities):
 		distance = distance + euc_2d(cities[c1], cities[c2])
 	return distance
 
+def random_permutation(cities):
+	import random
+	perm = range(0, len(cities))
+	for i in perm:
+		r = random.randrange(len(perm)-i) + i
+		perm[r], perm[i] = perm[i], perm[r]
+	return perm
+
 def stochastic_two_opt(parent):
 	import random
 	perm = parent[:]
@@ -32,16 +40,49 @@ def stochastic_two_opt(parent):
 	r = perm[c1:c2]
 	r.reverse()
 	perm[c1:c2] = r
-	return perm, [parent[c1-1], parent[c1]], [parent[c2-1], parent[c2]]
+	return perm, [[parent[c1-1], parent[c1]], [parent[c2-1], parent[c2]]]
 
 def is_tabu(permutation, tabu_list):
-	pass
+	for i in xrange(0, len(permutation)):
+		c1 = permutation[i]
+		c2 = permutation[iif(i==len(permutation)-1, 0, i+1)]
+		for forbidden_edge in tabu_list:
+			if forbidden_edge == [c1, c2]:
+				return True
+	return False
 
 def generate_candidate(best, tabu_list, cities):
-	pass
+	perm, edges = stochastic_two_opt(best['vector'])
+	while is_tabu(perm, tabu_list):
+		perm, edges = stochastic_two_opt(best['vector'])
+	candidate = {}
+	candidate['vector'] = perm
+	candidate['cost'] = cost(candidate['vector'], cities)
+	return [candidate, edges]
 
 def search(cities, tabu_list_size, candidate_list_size, max_iter):
-	pass
+	current = {}
+	current['vector'] = random_permutation(cities)
+	current['cost'] = cost(current['vector'], cities)
+	best = current
+	tabu_list = []
+	for iter in range(0, max_iter):
+		candidates = []
+		for i in xrange(0, candidate_list_size):
+			candidates.append(generate_candidate(current, tabu_list, cities))
+		candidates.sort(key=lambda x: x[0]['cost'])
+		best_candidate = candidates[0][0]
+		best_candidate_edges = candidates[0][1]
+		if best_candidate['cost'] < current['cost']:
+			current = best_candidate
+			if best_candidate['cost'] < best['cost']:
+				best = best_candidate
+			for edge in best_candidate_edges:
+				tabu_list.append(edge)
+			while len(tabu_list) > tabu_list_size:
+				tabu_list.pop()
+		print ' > iteration %d, best=%d' % (iter+1, best['cost'])
+	return best
 
 def main():
 	# problem configuration
