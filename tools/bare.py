@@ -3,8 +3,7 @@
 """
 """
 
-template_text = """
-#!/usr/bin/env python
+template_text = """#!/usr/bin/env python
 
 def main():
     pass
@@ -13,8 +12,7 @@ if __name__ == "__main__":
     main()
 """
 
-template_text_test = """
-#!/usr/bin/env python
+template_text_test = """#!/usr/bin/env python
 
 import unittest
 import os
@@ -29,6 +27,7 @@ if __name__ == '__main__':
     unittest.main()
 """
 
+
 def generate_template(name):
     import os
     print 'Generate Template for ', name
@@ -41,6 +40,7 @@ def generate_template(name):
     fout = open(file_path, 'w')
     print >>fout, template_text
     fout.close()
+
 
 def generate_template_test(name):
     import os
@@ -57,13 +57,15 @@ def generate_template_test(name):
     print >>fout, template_text_test % name
     fout.close()
 
+
 def main():
-    import sys, getopt
+    import sys
+    import getopt
     argv = sys.argv[1:]
     name = ''
     gen_test = False
     try:
-        opts, args = getopt.getopt(argv,"htn:",["name="])
+        opts, args = getopt.getopt(argv, "htn:", ["name="])
     except getopt.GetoptError:
         print 'bare.py [-t] -n <name>'
         sys.exit(-2)
@@ -80,6 +82,7 @@ def main():
     generate_template(name)
     if gen_test:
         generate_template_test(name)
+
 
 if __name__ == "__main__":
     main()
