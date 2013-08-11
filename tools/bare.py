@@ -62,7 +62,7 @@ def main():
     import sys
     import getopt
     argv = sys.argv[1:]
-    name = ''
+    names = []
     gen_test = False
     try:
         opts, args = getopt.getopt(argv, "htn:", ["name="])
@@ -76,12 +76,13 @@ def main():
         elif opt == '-t':
             gen_test = True
         elif opt in ("-n", "--name"):
-            name = arg
+            names.append(arg)
 
-    print 'Name :', name
-    generate_template(name)
-    if gen_test:
-        generate_template_test(name)
+    print 'Names :', names
+    for name in names:
+        generate_template(name)
+        if gen_test:
+            generate_template_test(name)
 
 
 if __name__ == "__main__":
