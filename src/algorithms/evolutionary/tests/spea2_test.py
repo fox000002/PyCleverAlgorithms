@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-class Testspea2(unittest.TestCase):
+class TestSpea2(unittest.TestCase):
     def setUp(self):
         pass
 

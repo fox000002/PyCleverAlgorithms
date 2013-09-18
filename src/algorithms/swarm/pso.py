@@ -47,7 +47,6 @@ def update_velocity(particle, gbest, max_v, c1, c2):
 
 
 def update_position(part, bounds):
-    #import math
     for i in xrange(0, len(part['position'])):
         v = part['position'][i]
         part['position'][i] = v + part['velocity'][i]

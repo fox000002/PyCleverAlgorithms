@@ -11,7 +11,7 @@ from genetic_algorithm import iif, point_mutation, crossover, reproduce, search
 class TestGeneticAlgorithm(unittest.TestCase):
     def setUp(self):
         pass
-    
+
     def test_iif(self):
         self.assertEqual(iif(1<50, "1", "0"), "1")
         self.assertEqual(iif('0'=='1', 1, 0), 0)
