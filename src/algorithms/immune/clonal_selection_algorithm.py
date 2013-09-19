@@ -4,39 +4,40 @@ def objective_function(v):
     return sum(map(lambda x : x**2, v))
 
 def decode(bitstring, search_space, bits_per_param):
-    pass
+	pass
 
 def evaluate(pop, search_space, bits_per_param):
-    pass
+	pass
 
 def random_bitstring(num_bits):
-    pass
+    from random import sample
+    return map(lambda x: iif(x<50, '1', '0'), sample(range(100), num_bits))
 
 def point_mutation(bitstring, rate):
-    pass
+	pass
 
-def calculate_mutation_rate(antibody, mutate_factor=-2.5):
-    pass
+def calculate_mutation_rate(antibody, mutation_factor=-2.5):
+	pass
 
 def num_clones(pop_size, clone_factor):
-    pass
+	pass
 
 def calculate_affinity(pop):
-    pass
+	pass
 
 def clone_and_hypermutate(pop, clone_factor):
-    pass
+	pass
 
 def random_insertion(search_space, pop, num_rand, bits_per_param):
-    pass
+	pass
 
 def search(search_space, max_gens, pop_size, clone_factor, num_rand, bits_per_param=16):
-    return { 'cost' : 0, 'vector' : [] }
+	return {'cost' : 0.0, 'vector' : []}
 
 def main():
     # problem configuration
     problem_size = 2
-    search_space = [[-5, +5]] * problem_size
+    search_space = [[-5,5]] * problem_size
     # algorithm configuration
     max_gens = 100
     pop_size = 100
@@ -44,7 +45,7 @@ def main():
     num_rand = 2
     # execute the algorithm
     best = search(search_space, max_gens, pop_size, clone_factor, num_rand)
-    print 'Done. Best Solution: c=%f, v=%s' % (best['cost'], str(best['vector']))
+    print "done! Solution: f=%f, s=%s" % (best['cost'], str(best['vector']))
 
 if __name__ == "__main__":
     main()
