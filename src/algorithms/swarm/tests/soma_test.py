@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-class TestNSGAII(unittest.TestCase):
+class TestSOMA(unittest.TestCase):
     def setUp(self):
         pass
 
