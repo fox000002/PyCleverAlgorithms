@@ -118,6 +118,15 @@ def soma_all_to_one(search_space, step, pathLength, prt, minDiv, migrations, pop
         'cost' : objective_function(individuals[indexOfLeader]),
         'history' : globalErrorHistory4Saving }    
 
+def soma_all_to_all():
+    pass
+
+def soma_all_to_one_randomly():
+    pass
+
+def some_all_to_all_adaptive():
+    pass
+
 def main():
     # problem configuration
     problem_size = 100
@@ -127,7 +136,7 @@ def main():
     pathLength = 2.1
     prt = 0.1
     minDiv = 0
-    migrations = 500
+    migrations = 10
     pop_size = 10*problem_size
     #
     best = soma_all_to_one(search_space, step, pathLength, prt, minDiv, migrations, pop_size)
