@@ -8,7 +8,9 @@ def rand_in_bounds(min, max):
     return random.randrange(min, max)
 
 def print_program(node):
-    pass
+    if type(node) != 'list':
+        return node
+    return '(%s %s %s)' % (node[0], print_program(node[1]), print_program(node[2]))
 
 def eval_program(node, map):
     pass

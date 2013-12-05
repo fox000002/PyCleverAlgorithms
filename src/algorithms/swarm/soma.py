@@ -10,16 +10,20 @@ def objective_function(v):
         val = val + 3*(cos(2*v[i])+sin(2*v[i+1]))+sqrt(v[i+1]**2+v[i]**2)/exp(0.2)
     return val
 
+def random_bound(bound):
+    import random
+    return bound[0] + (bound[1]-bound[0]) * random.random()   
+
 def random_vector(minmax):
     import random
     #print minmax
     return map(lambda x : x[0] + (x[1]-x[0]) * random.random(), minmax)
 
 def frange(start, stop, step):
-    assert step > 0.0
+    #assert step > 0.0
     total = start
     compo = 0.0
-    while total < stop:
+    while total <= stop:
         yield total
         y = step - compo
         temp = total + y
@@ -39,13 +43,14 @@ def soma_all_to_one(search_space, step, pathLength, prt, minDiv, migrations, pop
         individuals[i] = random_vector(search_space)
         costValues[i] = objective_function(individuals[i])
 
-    indexOfLeader = 1
+    indexOfLeader = 0
     # find the leader (individual with the lowest cost value)
     xmin = 99999999
     for i in xrange(0, pop_size):
         if costValues[i] < xmin:
-            min = costValues[i]
+            xmin = costValues[i]
             indexOfLeader = i
+    #print '--- indexOfLeader : %d (%d)' % (indexOfLeader, pop_size)
 
     globalErrorHistory = [0] * migrations
     mig = 0
@@ -69,6 +74,7 @@ def soma_all_to_one(search_space, step, pathLength, prt, minDiv, migrations, pop
 
             # Let's migrate!
             for t in frange(0.0, pathLength, step):
+                #print 'path : %f' % t
                 # Generate new PRTVector for each step of this individual
                 prtVectorContainOnlyZero = True
                 PRTVector = [0] * dim
@@ -86,15 +92,26 @@ def soma_all_to_one(search_space, step, pathLength, prt, minDiv, migrations, pop
 
                 # check boundaries
                 for j in xrange(0, dim):
-                    if tmpIndividual[j] < search_space[j][0] and tmpIndividual[j] > search_space[j][1]:
-                        tmpIndividual[j] = random_vector(search_space[j])
+                    if tmpIndividual[j] < search_space[j][0] or tmpIndividual[j] > search_space[j][1]:
+                        tmpIndividual[j] = random_bound(search_space[j])
 
                 tmpCostValue = objective_function(tmpIndividual)
 
                 if tmpCostValue < costValues[i]:
                     costValues[i] = tmpCostValue # store better CV and postion
-                    individuals[i] = tmpIndividual
+                    individuals[i] = tmpIndividual[:]
 
+                #print '%d -- %f %f' % (i+1, objective_function(individuals[i]), costValues[i])
+        # find the leader (individual with the lowest cost value)
+        #print 'indexOfLeader : %d' % indexOfLeader
+        xmin = 9999999
+        for i in xrange(0, pop_size):
+            if costValues[i] < xmin:
+                xmin = costValues[i]
+                indexOfLeader = i      
+        #print 'c--- indexOfLeader : %d (%d)' % (indexOfLeader, pop_size)
+        #for i in xrange(0, len(individuals)):
+        #    print '%d -- %f %f' % (i+1, objective_function(individuals[i]), costValues[i])
 
         globalErrorHistory[mig] = costValues[indexOfLeader]
 
@@ -108,11 +125,18 @@ def soma_all_to_one(search_space, step, pathLength, prt, minDiv, migrations, pop
                     go = False
         mig = mig + 1
 
-        print 'mig = %d of %d' % (mig, migrations)
+        print 'mig = %d of %d %f' % (mig, migrations, min(costValues))      
+        #print 'd--- indexOfLeader : %d = %f (%d)' % (indexOfLeader, costValues[indexOfLeader], pop_size)
+        #for i in xrange(0, len(individuals)):
+        #    print '%d -- %f' % (i+1, objective_function(individuals[i]))
 
     globalErrorHistory4Saving = [0] * mig
     for i in xrange(0, mig):
         globalErrorHistory4Saving[i] = globalErrorHistory[i]
+    #print 'X--- indexOfLeader : %d = %f (%f)' % (indexOfLeader, costValues[indexOfLeader], objective_function(individuals[indexOfLeader]))
+    
+    #for i in xrange(0, len(individuals)):
+    #    print '%d -- %f %f' % (i+1, objective_function(individuals[i]), costValues[i])
 
     return { 'position' : individuals[indexOfLeader], 
         'cost' : objective_function(individuals[indexOfLeader]),
@@ -136,12 +160,20 @@ def main():
     pathLength = 2.1
     prt = 0.1
     minDiv = 0
-    migrations = 10
-    pop_size = 10*problem_size
+    migrations = 500
+    pop_size = 2*problem_size
     #
     best = soma_all_to_one(search_space, step, pathLength, prt, minDiv, migrations, pop_size)
     #
     print 'Done. Best Solution: c=%f, v=%s' % (best['cost'], str(best['position']))
+    print 'History : %s' % best['history']
+
+    try:
+        import matplotlib.pyplot as plt
+        plt.plot(best['history'])
+        plt.show()
+    except:
+        print 'Please install matplot to show convergence history'
 
 if __name__ == "__main__":
     main()
