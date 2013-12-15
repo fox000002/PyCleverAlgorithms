@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-class Testevolutionary_programming(unittest.TestCase):
+class TestEvolutionary_programming(unittest.TestCase):
     def setUp(self):
         pass
 

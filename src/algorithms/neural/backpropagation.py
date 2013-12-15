@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
-
 def iif(condition, true_part, false_part):
     return (condition and [true_part] or [false_part])[0]
-
 
 def random_vector(minmax):
     import random
@@ -15,7 +13,7 @@ def initialize_weights(problem_size):
     return random_vector(minmax)
 
 def activate(weights, vector):
-    sum = weights[len(weights)-1] * 1.0
+    sum = weights[-1] * 1.0
     for i in xrange(0, len(vector)):
         sum = sum + weights[i] * vector[i]
     return sum
@@ -29,14 +27,19 @@ def transfer_derivative(output):
 def forward_propagate(net, vector):
     for i in xrange(0, len(net)):
         layer = net[i]
-        input = iif(i==0, vector, net[i-1][k]['output'] * len(net[i-1]))
+        print layer
+        if i==0:
+            input = vector
+        else:
+            input = [net[i-1][k]['output'] for k in xrange(0, len(net[i-1]))]
         for neuron in layer:
             neuron['activation'] = activate(neuron['weights'], input)
             neuron['output'] = transfer(neuron['activation'])
-    return net.last[0]['output']
+    return net[-1][0]['output']
 
 
 def backward_propagate_error(network, expected_output):
+    #print 'backward_propagate_error'
     for n in xrange(0, len(network)):
         index = len(network) - 1 - n
         if index == len(network)-1:
@@ -45,16 +48,23 @@ def backward_propagate_error(network, expected_output):
             neuron['delta'] = error * transfer_derivative(neuron['output'])
         else:
             for k in xrange(0, len(network[index])):
+                neuron = network[index][k]
                 sum = 0.0
                 # only sum errors weighted by connection to the current k'th neuron
                 for next_neuron in network[index+1]:
                     sum = sum + (next_neuron['weights'][k] * next_neuron['delta'])
                 neuron['delta'] = sum * transfer_derivative(neuron['output'])
+        #print 'bpe == ' + str(neuron)
+    #print '--> backward_propagate_error'
+    #print network
 
 def calculate_error_derivatives_for_weights(net, vector):
     for i in xrange(0, len(net)):
         layer = net[i]
-        input= iif(i==0, vector, net[i-1][k]['output'] * len(net[i-1]))
+        if i==0:
+            input = vector
+        else:
+            input = [ net[i-1][k]['output'] * len(net[i-1]) for k in xrange(0, len(net[i-1]))]
         for neuron in layer:
             for j in xrange(0, len(input)):
                 signal = input[j]
@@ -65,7 +75,7 @@ def update_weights(network, lrate, mom=0.8):
     for layer in network:
         for neuron in layer:
             for j in xrange(0, len(neuron['weights'])):
-                w = neuron[j]
+                w = neuron['weights'][j]
                 delta = (lrate * neuron['deriv'][j]) + (neuron['last_delta'][j] * mom)
                 neuron['weights'][j] = neuron['weights'][j]  + delta
                 neuron['last_delta'][j] = delta
@@ -74,14 +84,15 @@ def update_weights(network, lrate, mom=0.8):
 
 def train_network(network, domain, num_inputs, iterations, lrate):
     correct = 0
-    for epoch in xrange(0, len(iterations)):
+    for epoch in xrange(0, iterations):
         for pattern in domain:
-            vector,expected = pattern[:],pattern.last
+            vector,expected = pattern[:],pattern[-1]
             output = forward_propagate(network, vector)
-            if output.round == expected:
+            #print network
+            if round(output) == expected:
                 correct = correct + 1 
-                backward_propagate_error(network, expected)
-                calculate_error_derivatives_for_weights(network, vector)
+            backward_propagate_error(network, expected)
+            calculate_error_derivatives_for_weights(network, vector)
             update_weights(network, lrate)
             if (epoch+1)%100 == 0 :
                 print "> epoch=%d, Correct=%d/#{100*%d}" % (epoch+1, correct, len(domain))
@@ -102,12 +113,15 @@ def create_neuron(num_inputs):
             'last_delta' : [0.0] * (num_inputs+1),
             'deriv' : [0.0] * (num_inputs+1)}
 
-    def execute(domain, num_inputs, iterations, num_nodes, lrate):
-        network = []
+def execute(domain, num_inputs, iterations, num_nodes, lrate):
+    network = []
     network.append([create_neuron(num_inputs)] * num_nodes)
-    network.append(create_neuron(len(network.last))) 
+    #print network
+    network.append([create_neuron(len(network[-1])-1)]) 
+    #print network
+    #return network
     print "Topology: %d " % (num_inputs)
-    train_network(network, domain, num_inputs, iterations, lrate)  
+    train_network(network, domain, num_inputs, iterations, lrate) 
     test_network(network, domain, num_inputs)
     return network
 

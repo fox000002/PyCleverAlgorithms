@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-class Testgene_expression_programming(unittest.TestCase):
+class TestGene_expression_programming(unittest.TestCase):
     def setUp(self):
         pass
 

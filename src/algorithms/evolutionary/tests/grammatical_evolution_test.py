@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-class Testgrammatical_evolution(unittest.TestCase):
+class TestGrammatical_evolution(unittest.TestCase):
     def setUp(self):
         pass
 

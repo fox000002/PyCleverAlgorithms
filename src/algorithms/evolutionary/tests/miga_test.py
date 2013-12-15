@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-from miga import 
+from miga import iif
 
 class TestMiga(unittest.TestCase):
     def setUp(self):

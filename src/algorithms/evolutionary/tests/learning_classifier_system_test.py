@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-class Testlearning_classifier_system(unittest.TestCase):
+class TestLearning_classifier_system(unittest.TestCase):
     def setUp(self):
         pass
 

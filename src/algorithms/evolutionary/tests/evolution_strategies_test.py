@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-class Testevolution_strategies(unittest.TestCase):
+class TestEvolution_strategies(unittest.TestCase):
     def setUp(self):
         pass
 
