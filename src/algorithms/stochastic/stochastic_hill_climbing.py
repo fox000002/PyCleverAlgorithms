@@ -1,26 +1,34 @@
 #!/usr/bin/env python
 
 """
+Stochastic Hill Climbing
 """
 
-def iif(condition, true_part, false_part):  
-    return (condition and [true_part] or [false_part])[0]  
+
+def iif(condition, true_part, false_part):
+    return (condition and [true_part] or [false_part])[0]
+
 
 def onemax(v):
-    return sum(map(lambda x : iif(x=='1', 1, 0), v))
+    return sum(map(lambda x: iif(x == '1', 1, 0), v))
+
 
 def random_bitstring(num_bits):
     from random import sample
-    return map(lambda x: iif(x<50, '1', '0'), sample(range(100), num_bits))
+
+    return map(lambda x: iif(x < 50, '1', '0'), sample(range(100), num_bits))
+
 
 def random_neighbor(bitstring):
     from random import randint
+
     mutant = bitstring[:]
-    pos = randint(0, len(bitstring)-1)
+    pos = randint(0, len(bitstring) - 1)
     #print '-->', mutant
-    mutant[pos] = iif(mutant[pos]=='1', '0', '1')
+    mutant[pos] = iif(mutant[pos] == '1', '0', '1')
     #print '<--', mutant
     return mutant
+
 
 def search(max_iter, num_bits):
     candidate = {}
@@ -34,10 +42,11 @@ def search(max_iter, num_bits):
             #print candidate['vector']
             candidate = neighbor
             #print candidate['vector']
-        print ' > iteration %d, best=%d' % (iter+1, candidate['cost'])
+        print ' > iteration %d, best=%d' % (iter + 1, candidate['cost'])
         if (candidate['cost'] == num_bits):
             break
     return candidate
+
 
 def main():
     #
@@ -47,6 +56,7 @@ def main():
     #
     best = search(max_iter, num_bits)
     print 'Done. Best Solution: c=%d, v=%s' % (best['cost'], str(best['vector']))
+
 
 if __name__ == "__main__":
     main()

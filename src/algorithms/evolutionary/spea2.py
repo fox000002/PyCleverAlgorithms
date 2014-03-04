@@ -1,58 +1,76 @@
 #!/usr/bin/env python
 
 def objective1(v):
-    return sum(map(lambda x : x**2, v))
+    return sum(map(lambda x: x ** 2, v))
+
 
 def objective2(v):
-    return sum(map(lambda x : (x-2.0)**2, v))
+    return sum(map(lambda x: (x - 2.0) ** 2, v))
+
 
 def decode(bitstring, search_space, bits_per_param):
-	pass
+    pass
+
 
 def random_bitstring(num_bits):
-	pass
+    pass
+
 
 def point_mutation(bitstring, rate):
-	pass
+    pass
+
 
 def binary_tournament(pop):
-	pass
+    pass
+
 
 def crossover(parent1, parent2, rate):
-	pass
+    pass
+
 
 def reproduce(selected, pop_size, p_cross):
-	pass
+    pass
+
 
 def calculate_objectives(pop, search_space, bits_per_param):
-	pass  
+    pass
+
 
 def dominates(p1, p2):
-	pass
+    pass
+
 
 def weighted_sum(x):
-	pass
+    pass
+
 
 def euclidean_distance(c1, c2):
-	pass
+    pass
+
 
 def calculate_dominated(pop):
-	pass
+    pass
+
 
 def calculate_raw_fitness(p1, pop):
-	pass
+    pass
+
 
 def calculate_density(p1, pop):
-	pass
+    pass
+
 
 def calculate_fitness(pop, archive, search_space, bits_per_param):
-	pass
+    pass
+
 
 def environmental_selection(pop, archive, archive_size):
-	pass
+    pass
+
 
 def search(search_space, max_gens, pop_size, archive_size, p_cross, bits_per_param=16):
-	pass
+    pass
+
 
 def main():
     # problem configuration
@@ -66,6 +84,7 @@ def main():
     # execute the algorithm
     pop = search(search_space, max_gens, pop_size, archive_size, p_cross)
     print "done!"
+
 
 if __name__ == "__main__":
     main()

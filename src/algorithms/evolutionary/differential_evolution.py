@@ -6,7 +6,7 @@ def iif(condition, true_part, false_part):
 
 
 def objective_function(v):
-    return sum(map(lambda x : x**2, v))
+    return sum(map(lambda x: x**2, v))
 
 
 def random_vector(minmax):
@@ -16,10 +16,10 @@ def random_vector(minmax):
 
 def de_rand_1_bin(p0, p1, p2, p3, f, cr, search_space):
     from random import random, randint
-    sample = {'vector' :  [0] * len(p0['vector']) }
-    cut =  1 + randint(0, len(sample['vector'])-1)
+    sample = {'vector':  [0] * len(p0['vector'])}
+    cut = 1 + randint(0, len(sample['vector'])-1)
     for i in xrange(0, len(sample['vector'])):
-        if i==cut or random() < cr:
+        if i == cut or random() < cr:
             v = p3['vector'][i] + f * (p1['vector'][i] - p2['vector'][i])
             if v < search_space[i][0]:
                 v = search_space[i][0]
@@ -30,7 +30,7 @@ def de_rand_1_bin(p0, p1, p2, p3, f, cr, search_space):
 
 
 def select_parents(pop, current):
-    from random import random, randint
+    from random import randint
     p1, p2, p3 = randint(0, len(pop)-1), randint(0, len(pop)-1), randint(0, len(pop)-1)
     while p1 == current:
         p1 = randint(0, len(pop)-1)
@@ -51,7 +51,7 @@ def create_children(pop, minmax, f, cr):
 
 
 def select_population(parents, children):
-    return map(lambda i : iif(children[i]['cost']<=parents[i]['cost'], children[i], parents[i]), xrange(0, len(parents)))
+    return map(lambda i: iif(children[i]['cost'] <= parents[i]['cost'], children[i], parents[i]), xrange(0, len(parents)))
 
 
 def search(max_gens, search_space, pop_size, f, cr):
@@ -84,6 +84,7 @@ def main():
     # execute the algorithm
     best = search(max_gens, search_space, pop_size, weightf, crossf)
     print "done! Solution: f=%f, s=%s"% (best['cost'], str(best['vector']))
+
 
 if __name__ == "__main__":
     main()
