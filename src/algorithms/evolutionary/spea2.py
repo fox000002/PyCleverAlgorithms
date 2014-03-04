@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+
 def objective1(v):
     return sum(map(lambda x: x ** 2, v))
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-# Bacterial Foraging Optimization Algorithm 
+"""
+Bacterial Foraging Optimization Algorithm
+"""
 
 
 def objective_function(v):

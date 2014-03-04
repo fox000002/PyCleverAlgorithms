@@ -11,7 +11,7 @@ def objective_function(v):
 
 def random_vector(minmax):
     import random
-    return map(lambda x : x[0] + (x[1]-x[0]) * random.random(), minmax)
+    return map(lambda x: x[0] + (x[1]-x[0]) * random.random(), minmax)
 
 
 def de_rand_1_bin(p0, p1, p2, p3, f, cr, search_space):
@@ -55,7 +55,7 @@ def select_population(parents, children):
 
 
 def search(max_gens, search_space, pop_size, f, cr):
-    pop = map(lambda i : {'vector' : random_vector(search_space)}, xrange(0, pop_size))
+    pop = map(lambda i: {'vector' : random_vector(search_space)}, xrange(0, pop_size))
     for p in pop:
         p['cost'] = objective_function(p['vector'])
     pop.sort(key=lambda x: x['cost'])
