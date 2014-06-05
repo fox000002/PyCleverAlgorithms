@@ -101,9 +101,10 @@ def get_node(node, node_num, current_node=0):
 
 
 def prune(node, max_depth, terms, depth=0):
+    from random import randrange
     if depth == max_depth-1:
-        t = terms[rand(terms.size)]
-        return iif((t=='R'), rand_in_bounds(-5.0, +5.0), t)
+        t = terms[randrange(len(terms))]
+        return iif(t == 'R', rand_in_bounds(-5.0, +5.0), t)
     depth += 1
     if type(node) != 'list':
         return node

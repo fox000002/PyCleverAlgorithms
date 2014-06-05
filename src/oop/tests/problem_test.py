@@ -8,6 +8,7 @@ os.sys.path.append("..")
 from problem import Problem
 from undefined_exception import UndefinedError
 
+
 class TestProblem(unittest.TestCase):
     def setUp(self):
         self.problem = Problem()

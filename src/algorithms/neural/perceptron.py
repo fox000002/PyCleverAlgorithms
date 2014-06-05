@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-#
-#
-#
-#
-#
+"""
+Perceptron
+"""
+
 
 def iif(condition, true_part, false_part):
     return (condition and [true_part] or [false_part])[0]
@@ -22,16 +21,16 @@ def initialize_weights(problem_size):
 
 
 def update_weights(num_inputs, weights, input, out_exp, out_act, l_rate):
-    for i in xrange(0, num_inputs):
+    for i in range(0, num_inputs):
         weights[i] = weights[i] + l_rate * (out_exp - out_act) * input[i]
     weights[num_inputs] += l_rate * (out_exp - out_act) * 1.0
 
 
 def activate(weights, vector):
-    sum = weights[len(weights) - 1] * 1.0
-    for i in xrange(0, len(vector)):
-        sum = sum + weights[i] * vector[i]
-    return sum
+    sum_wv = weights[- 1] * 1.0
+    for i in range(0, len(vector)):
+        sum_wv += weights[i] * vector[i]
+    return sum_wv
 
 
 def transfer(activation):
@@ -44,7 +43,7 @@ def get_output(weights, vector):
 
 
 def train_weight(weights, domain, num_inputs, iterations, lrate):
-    for epoch in xrange(0, iterations):
+    for epoch in range(0, iterations):
         error = 0.0
         for pattern in domain:
             input = pattern[0:num_inputs]
@@ -52,24 +51,24 @@ def train_weight(weights, domain, num_inputs, iterations, lrate):
             expected = pattern[-1]
             error = error + abs(output - expected)
             update_weights(num_inputs, weights, input, expected, output, lrate)
-        print "> epoch=%d, error=%f" % (epoch, error)
+        print("> epoch=%d, error=%f" % (epoch, error))
 
 
-def test_weights(weights, domain, num_inputs):
+def do_test_weights(weights, domain, num_inputs):
     correct = 0
     for pattern in domain:
-        input_vector = [float(pattern[k]) for k in xrange(0, num_inputs)]
+        input_vector = [float(pattern[k]) for k in range(0, num_inputs)]
     output = get_output(weights, input_vector)
     if round(output) == pattern[-1]:
         correct += 1
-    print "Finished test with a score of #{%d}/#{%d}" % (correct, len(domain))
+    print("Finished test with a score of #{%d}/#{%d}" % (correct, len(domain)))
     return correct
 
 
 def execute(domain, num_inputs, iterations, learning_rate):
     weights = initialize_weights(num_inputs)
     train_weight(weights, domain, num_inputs, iterations, learning_rate)
-    test_weights(weights, domain, num_inputs)
+    do_test_weights(weights, domain, num_inputs)
     return weights
 
 
@@ -83,10 +82,10 @@ def main():
     # execute the algorithm
     w = execute(or_problem, inputs, iterations, learning_rate)
     #
-    print "weights : %s" % str(w)
+    print("weights : %s" % str(w))
     #
-    print "result : %s -> %s" % (str([0, 1, 0]), get_output(w, [0, 1, 0]))
-    print "result : %s -> %s" % (str([0, 1, 1]), get_output(w, [0, 1, 1]))
+    print("result : %s -> %s" % (str([0, 1, 0]), get_output(w, [0, 1, 0])))
+    print("result : %s -> %s" % (str([0, 1, 1]), get_output(w, [0, 1, 1])))
 
 
 if __name__ == "__main__":

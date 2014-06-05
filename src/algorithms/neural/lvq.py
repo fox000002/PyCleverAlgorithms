@@ -24,9 +24,7 @@ def initialize_vectors(domain, num_vectors):
     codebook_vectors = []
     for i in xrange(num_vectors):
         selected_class = randrange(len(classes))
-        codebook = {}
-        codebook['label'] = classes[selected_class]
-        codebook['vector'] = random_vector([[0, 1], [0, 1]])
+        codebook = {'label': classes[selected_class], 'vector': random_vector([[0, 1], [0, 1]])}
         codebook_vectors.append(codebook)
     return codebook_vectors
 

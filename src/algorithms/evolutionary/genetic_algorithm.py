@@ -71,7 +71,7 @@ def search(max_gens, num_bits, pop_size, p_crossover, p_mutation):
         c['fitness'] = onemax(c['bitstring'])
     population.sort(key=lambda x: x['fitness'])
     best = population[0]
-    for gen in xrange(0, max_gens):
+    for gen in xrange(max_gens):
         selected = [binary_tournament(population) for i in xrange(0, pop_size)]
         children = reproduce(selected, pop_size, p_crossover, p_mutation)
         for c in children:

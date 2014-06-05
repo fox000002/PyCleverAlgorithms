@@ -11,10 +11,10 @@ def random_vector(minmax):
     return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), minmax)
 
 
-def initialize_weights(problem_size):
+def initialize_weights(num_weights):
     import random
 
-    minmax = [[-random.random(), random.random()]] * (problem_size + 1)
+    minmax = [[-random.random(), random.random()]] * num_weights
     return random_vector(minmax)
 
 
@@ -85,8 +85,7 @@ def calculate_error_derivatives_for_weights(net, vector):
 def update_weights(network, lrate, mom=0.8):
     for layer in network:
         for neuron in layer:
-            for j in xrange(0, len(neuron['weights'])):
-                w = neuron['weights'][j]
+            for j, w in enumerate(neuron['weights']):
                 delta = (lrate * neuron['deriv'][j]) + (neuron['last_delta'][j] * mom)
                 neuron['weights'][j] = neuron['weights'][j] + delta
                 neuron['last_delta'][j] = delta
@@ -101,7 +100,7 @@ def train_network(network, domain, num_inputs, iterations, lrate):
             output = forward_propagate(network, vector)
             #print network
             if round(output) == expected:
-                correct = correct + 1
+                correct += 1
             backward_propagate_error(network, expected)
             calculate_error_derivatives_for_weights(network, vector)
             update_weights(network, lrate)
@@ -110,13 +109,13 @@ def train_network(network, domain, num_inputs, iterations, lrate):
                 correct = 0
 
 
-def test_network(network, domain, num_inputs):
+def do_test_network(network, domain, num_inputs):
     correct = 0
     for pattern in domain:
         input_vector = pattern[:]
         output = forward_propagate(network, input_vector)
-        if output.round == pattern.last:
-            correct = correct + 1
+        if round(output) == pattern[-1]:
+            correct += 1
     print "Finished test with a score of %d/%d" % (correct, len(domain))
     return correct
 
@@ -130,13 +129,10 @@ def create_neuron(num_inputs):
 def execute(domain, num_inputs, iterations, num_nodes, lrate):
     network = []
     network.append([create_neuron(num_inputs)] * num_nodes)
-    #print network
     network.append([create_neuron(len(network[-1]) - 1)])
-    #print network
-    #return network
-    print "Topology: %d " % (num_inputs)
+    print "Topology: %d " % num_inputs
     train_network(network, domain, num_inputs, iterations, lrate)
-    test_network(network, domain, num_inputs)
+    do_test_network(network, domain, num_inputs)
     return network
 
 

@@ -83,7 +83,7 @@ def main():
     crossf = 0.9
     # execute the algorithm
     best = search(max_gens, search_space, pop_size, weightf, crossf)
-    print "done! Solution: f=%f, s=%s"% (best['cost'], str(best['vector']))
+    print "Done! Solution: f=%f, s=%s"% (best['cost'], str(best['vector']))
 
 
 if __name__ == "__main__":

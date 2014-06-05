@@ -9,6 +9,7 @@ from problem import Problem
 from strategy import Strategy
 from undefined_exception import UndefinedError
 
+
 class TestStrategy(unittest.TestCase):
     def setUp(self):
         self.problem = Problem()

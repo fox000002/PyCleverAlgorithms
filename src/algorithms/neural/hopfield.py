@@ -29,10 +29,10 @@ def transfer(activation):
 def propagate_was_change(neurons):
     import random
 
-    i = random.randint(0, len(neurons))
+    i = random.randint(0, len(neurons)-1)
     activation = 0
-    for j in xrange(0, len(neurons)):
-        other = neurons[j]
+    for j, other in enumerate(neurons):
+        #print i, other
         if i != j:
             activation = activation + other['weights'][i] * other['output']
     output = transfer(activation)
@@ -53,8 +53,13 @@ def get_output(neurons, pattern, evals=100):
 
 def flatten(l):
     import itertools
-    return list(itertools.chain(*l))
-
+    try:
+        if isinstance(l[0], list):
+            return list(itertools.chain(*l))
+        else:
+            return l
+    except Exception as ex:
+        print ex
 
 def train_network(neurons, patterns):
     for i in xrange(len(neurons)):
@@ -74,18 +79,18 @@ def train_network(neurons, patterns):
 
 
 def to_binary(vector):
-    return map(lambda x: iif(x == -1, 0, 1), vector)
+    return map(lambda x: iif(x == -1, '0', '1'), vector)
 
 
 def print_patterns(provided, expected, actual):
     p, e, a = to_binary(provided), to_binary(expected), to_binary(actual)
-    p1, p2, p3 = ', '.join(p[0:2]), ', '.join(p[3:5]), ', '.join(p[6:8])
-    e1, e2, e3 = ', '.join(e[0:2]), ', '.join(e[3:5]), ', '.join(e[6:8])
-    a1, a2, a3 = ', '.join(a[0:2]), ', '.join(a[3:5]), ', '.join(a[6:8])
+    p1, p2, p3 = ', '.join(p[0:3]), ', '.join(p[3:6]), ', '.join(p[6:9])
+    e1, e2, e3 = ', '.join(e[0:3]), ', '.join(e[3:6]), ', '.join(e[6:9])
+    a1, a2, a3 = ', '.join(a[0:3]), ', '.join(a[3:6]), ', '.join(a[6:9])
     print "Provided   Expected     Got"
-    print "#{p1}     #{e1}      #{a1}"
-    print "#{p2}     #{e2}      #{a2}"
-    print "#{p3}     #{e3}      #{a3}"
+    print "%s     %s      %s" % (p1, e1, a1)
+    print "%s     %s      %s" % (p2, e2, a2)
+    print "%s     %s      %s" % (p3, e3, a3)
 
 
 def calculate_error(expected, actual):
@@ -110,7 +115,7 @@ def perturb_pattern(vector, num_errors=1):
     return perturbed
 
 
-def test_network(neurons, patterns):
+def do_test_network(neurons, patterns):
     error = 0.0
     for pattern in patterns:
         vector = flatten(pattern)
@@ -127,7 +132,7 @@ def test_network(neurons, patterns):
 def execute(patterns, num_inputs):
     neurons = [create_neuron(num_inputs)] * num_inputs
     train_network(neurons, patterns)
-    test_network(neurons, patterns)
+    do_test_network(neurons, patterns)
     return neurons
 
 

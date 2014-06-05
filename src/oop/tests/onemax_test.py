@@ -7,8 +7,10 @@ os.sys.path.append("..")
 
 from onemax import OneMax, GeneticAlgorithm
 
+
 def iif(condition, true_part, false_part):  
     return (condition and [true_part] or [false_part])[0]  
+
 
 class TestOneMax(unittest.TestCase):
     def setUp(self):
@@ -30,9 +32,8 @@ class TestOneMax(unittest.TestCase):
         self.assertEqual(False, self.o.is_optimal({'fitness' : 5}))
 
     def test_random_bitstring(self):
-        import string
         self.assertEqual(10, len(self.g.random_bitstring(10)))
-        self.assertEqual(0, sum(map(lambda x : iif(x=='1' or x=='0', 0, 1), self.g.random_bitstring(10))))
+        self.assertEqual(0, sum(map(lambda x: iif(x == '1' or x == '0', 0, 1), self.g.random_bitstring(10))))
 
     def test_random_bitstring_ratio(self):
         pass

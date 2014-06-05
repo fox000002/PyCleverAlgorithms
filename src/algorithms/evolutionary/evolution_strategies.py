@@ -101,7 +101,7 @@ def main():
     num_children = 20
     # execute the algorithm
     best = search(max_gens, search_space, pop_size, num_children)
-    print "done! Solution: f=%f, s=%s"% (best['fitness'], str(best['vector']))
+    print "Done! Solution: f=%f, s=%s"% (best['fitness'], str(best['vector']))
 
 if __name__ == "__main__":
     main()
