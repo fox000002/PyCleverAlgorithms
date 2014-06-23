@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+NSGA II
+"""
+
 
 def objective1(v):
     return sum(map(lambda x: x ** 2, v))

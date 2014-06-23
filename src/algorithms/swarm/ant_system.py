@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
-# Ant System algorithm/Ant Cycle algorithm
-# It's inspired by the foraging behavior of ants, specifically the pheromone communication
-# between ants regarding a good path between the colony and a food source in an environment.
-# The mechanism is called stigmergy.
+"""
+Ant System algorithm/Ant Cycle algorithm
+It's inspired by the foraging behavior of ants, specifically the pheromone communication
+between ants regarding a good path between the colony and a food source in an environment.
+The mechanism is called stigmergy.
+"""
 
 
 def iif(condition, true_part, false_part):
@@ -70,7 +72,6 @@ def select_next_city(choices):
 
 def stepwise_const(cities, phero, c_heur, c_hist):
     import random
-
     perm = []
     perm.append(random.randint(0, len(cities)-1))
 

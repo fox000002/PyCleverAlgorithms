@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 """
+Particle Swarm Optimization (PSO)
 """
 
 

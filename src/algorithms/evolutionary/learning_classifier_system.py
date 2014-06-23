@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+"""
+Learning classifier system
+"""
+
+
 def iif(condition, true_part, false_part):
     return (condition and [true_part] or [false_part])[0]
 
@@ -9,7 +14,7 @@ def neg(bit):
 
 
 def target_function(s):
-    ints = [int(c) for x in s]
+    ints = [int(x) for x in s]
     x0, x1, x2, x3, x4, x5 = ints
     return neg(x0) * neg(x1) * x2 + neg(x0) * x1 * x3 + x0 * neg(x1) * x4 + x0 * x1 * x5
 
@@ -56,7 +61,7 @@ def generate_prediction(match_set):
     pass
 
 
-def select_action(preditions, p_explorer=false):
+def select_action(preditions, p_explorer=False):
     pass
 
 

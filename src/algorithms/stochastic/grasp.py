@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-"""Greedy Randomized Adaptive Search Procedure
+"""
+Greedy Randomized Adaptive Search Procedure (GRASP)
 """
 
 
@@ -26,7 +27,6 @@ def cost(permutation, cities):
 
 def stochastic_two_opt(permutation):
     from random import randrange
-
     perm = permutation[:]
     c1, c2 = randrange(len(perm)), randrange(len(perm))
     exclude = [c1]

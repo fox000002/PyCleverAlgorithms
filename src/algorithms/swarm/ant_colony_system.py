@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-# Ant Colony Algorithm
+"""
+Ant Colony Algorithm
+"""
 
 
 def iif(condition, true_part, false_part):
@@ -64,7 +66,7 @@ def prob_select(choices):
 
 
 def greedy_select(choices):
-    return max(choices, key = lambda x: x['prob'])['city']
+    return max(choices, key=lambda x: x['prob'])['city']
 
 
 def stepwise_const(cities, phero, c_heur, c_greed):

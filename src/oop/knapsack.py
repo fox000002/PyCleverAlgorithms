@@ -180,9 +180,9 @@ def main():
         # parse the input
         lines = input_data.split('\n')
 
-        firstLine = lines[0].split()
-        item_count = int(firstLine[0])
-        capacity = int(firstLine[1])
+        first_line = lines[0].split()
+        item_count = int(first_line[0])
+        capacity = int(first_line[1])
 
         for i in range(1, item_count+1):
             line = lines[i]

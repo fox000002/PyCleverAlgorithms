@@ -65,7 +65,7 @@ def train_network(vectors, shape, iterations, l_rate, neighborhood_size):
 
 
 def summarize_vectors(vectors):
-    minmax = [[1,0]] * len(vectors[0]['vector'])
+    minmax = [[1, 0]] * len(vectors[0]['vector'])
     for c in vectors:
         for i in range(len(c['vector'])):
             v = c['vector'][i]
@@ -82,7 +82,7 @@ def summarize_vectors(vectors):
     return minmax
 
 
-def test_network(codebook_vectors, shape, num_trials=100):
+def do_test_network(codebook_vectors, shape, num_trials=100):
     error = 0.0
     for i in range(num_trials):
         pattern = random_vector(shape)
@@ -97,7 +97,7 @@ def execute(domain, shape, iterations, l_rate, neigh_size, width, height):
     vectors = initialize_vectors(domain, width, height)
     summarize_vectors(vectors)
     train_network(vectors, shape, iterations, l_rate, neigh_size)
-    test_network(vectors, shape)
+    do_test_network(vectors, shape)
     summarize_vectors(vectors)
     return vectors
 

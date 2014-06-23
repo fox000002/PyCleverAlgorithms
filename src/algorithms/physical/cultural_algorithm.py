@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+"""
+Cultural Algorithm
+"""
+
+
 def main():
     pass
 

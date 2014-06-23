@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 """
+Variable Neighborhood Search
 """
 
 

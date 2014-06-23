@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 
-# Genetic Programming
+"""
+Genetic Programming
+"""
 
 
 def iif(condition, true_part, false_part):
     return (condition and [true_part] or [false_part])[0]
 
 
-def rand_in_bounds(min, max):
+def rand_in_bounds(min_value, max_value):
     import random
-    return random.randrange(min, max)
+    return random.randrange(min_value, max_value)
 
 
 def print_program(node):
@@ -18,25 +20,25 @@ def print_program(node):
     return '(%s %s %s)' % (node[0], print_program(node[1]), print_program(node[2]))
 
 
-def eval_program(node, map):
+def eval_program(node, map_value):
     if type(node) != 'list':
-        if not map[node] is None:
-            return float(map[node])
+        if not map_value[node] is None:
+            return float(map_value[node])
         return float(node)
-    arg1, arg2 = eval_program(node[1], map), eval_program(node[2], map)
+    arg1, arg2 = eval_program(node[1], map_value), eval_program(node[2], map_value)
     if node[0] == '/' and arg2 == 0.0:
         return 0
     return eval("%f %s %f" % (arg1, node[0], arg2))
 
 
-def generate_random_program(max, funcs, terms, depth=0):
+def generate_random_program(max_value, funcs, terms, depth=0):
     import random
-    if depth==max-1 or (depth > 1 and random.random() < 0.1):
+    if depth == max_value-1 or (depth > 1 and random.random() < 0.1):
         t = terms[random.randrange(len(terms))]
         return iif((t == 'R'), rand_in_bounds(-5.0, +5.0), t)
     depth += 1
-    arg1 = generate_random_program(max, funcs, terms, depth)
-    arg2 = generate_random_program(max, funcs, terms, depth)
+    arg1 = generate_random_program(max_value, funcs, terms, depth)
+    arg2 = generate_random_program(max_value, funcs, terms, depth)
     return [funcs[random.randrange(len(funcs))], arg1, arg2]
 
 
@@ -48,15 +50,15 @@ def count_nodes(node):
     return a1+a2+1
 
 
-def target_function(input):
-    return input**2 + input + 1
+def target_function(input_value):
+    return input_value**2 + input_value + 1
 
 
 def fitness(program, num_trials=20):
     sum_error = 0.0
     for i in xrange(num_trials):
-        input = rand_in_bounds(-1.0, 1.0)
-        error = eval_program(program, {'X': input}) - target_function(input)
+        input_value = rand_in_bounds(-1.0, 1.0)
+        error = eval_program(program, {'X': input_value}) - target_function(input_value)
         sum_error += abs(error)
     return sum_error / float(num_trials)
 
@@ -125,20 +127,20 @@ def crossover(parent1, parent2, max_depth, terms):
     return [child1, child2]
 
 
-def mutation(parent, max_depth, functs, terms):
+def mutation(parent, max_depth, functions, terms):
     import random
-    random_tree = generate_random_program(max_depth/2, functs, terms)
+    random_tree = generate_random_program(max_depth/2, functions, terms)
     point = random.randrange(count_nodes(parent))
     child, count = replace_node(parent, random_tree, point)
     child = prune(child, max_depth, terms)
     return child
 
 
-def search(max_gens, pop_size, max_depth, bouts, p_repro, p_cross, p_mut, functs, terms):
+def search(max_gens, pop_size, max_depth, bouts, p_reproduce, p_cross, p_mutate, functions, terms):
     import random
-    population = [{}] * pop_size
+    population = [{} for i in xrange(pop_size)]
     for i in xrange(pop_size):
-        population[i]['prog']  = generate_random_program(max_depth, functs, terms)
+        population[i]['prog'] = generate_random_program(max_depth, functions, terms)
     for c in population:
         c['fitness'] = fitness(c['prog'])
     best = population.sort(lambda x: x['fitness'])[0]
@@ -148,17 +150,17 @@ def search(max_gens, pop_size, max_depth, bouts, p_repro, p_cross, p_mut, functs
             operation = random.random()
         p1 = tournament_selection(population, bouts)
         c1 = {}
-        if operation < p_repro:
+        if operation < p_reproduce:
             c1['prog'] = copy_program(p1['prog'])
         else:
-            if operation < p_repro+p_cross:
+            if operation < p_reproduce+p_cross:
                 p2 = tournament_selection(population, bouts)
                 c2 = {}
                 c1['prog'], c2['prog'] = crossover(p1['prog'], p2['prog'], max_depth, terms)
                 children.append(c2)
             else:
-                if operation < p_repro+p_cross+p_mut:
-                    c1['prog'] = mutation(p1['prog'], max_depth, functs, terms)
+                if operation < p_reproduce+p_cross+p_mutate:
+                    c1['prog'] = mutation(p1['prog'], max_depth, functions, terms)
         if len(children) < pop_size:
             children.append(c1)
         for c in children:
@@ -176,17 +178,17 @@ def search(max_gens, pop_size, max_depth, bouts, p_repro, p_cross, p_mut, functs
 def main():
     # problem configuration
     terms = ['X', 'R']
-    functs = ['+', '-', '*', '/']
+    functions = ['+', '-', '*', '/']
     # algorithm configuration
     max_gens = 100
     max_depth = 7
     pop_size = 100
     bouts = 5
-    p_repro = 0.08
+    p_reproduce = 0.08
     p_cross = 0.90
-    p_mut = 0.02
+    p_mutate = 0.02
     # execute the algorithm
-    best = search(max_gens, pop_size, max_depth, bouts, p_repro, p_cross, p_mut, functs, terms)
+    best = search(max_gens, pop_size, max_depth, bouts, p_reproduce, p_cross, p_mutate, functions, terms)
     print "done! Solution: f=%f, %s" % (best['fitness'], print_program(best['prog']))
 
 if __name__ == "__main__":

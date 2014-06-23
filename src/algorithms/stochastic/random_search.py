@@ -9,10 +9,9 @@ def objective_function(v):
     return sum(map(lambda x: x ** 2, v))
 
 
-def random_vector(minmax):
+def random_vector(min_max):
     import random
-
-    return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), minmax)
+    return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), min_max)
 
 
 def search(search_space, max_iteration):

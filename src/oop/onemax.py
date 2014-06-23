@@ -18,11 +18,11 @@ class OneMax(Problem):
     def assess(self, candidate_solution):
         if len(candidate_solution['bitstring']) != self.num_bits:
             raise UnmatchError("Expected #{@num_bits} in candidate solution.")
-        sum = 0
+        sum_value = 0
         for i in xrange(0, len(candidate_solution['bitstring'])):
             if candidate_solution['bitstring'][i] == '1':
-                sum += 1
-        return sum
+                sum_value += 1
+        return sum_value
 
     def is_optimal(self, candidate_solution):
         return candidate_solution['fitness'] == self.num_bits
@@ -37,19 +37,19 @@ class GeneticAlgorithm(Strategy):
         self.p_crossover = crossover
         self.p_mutation = mutation
 
-    def random_bitstring(self, num_bits):
+    @staticmethod
+    def random_bitstring(num_bits):
         from random import sample
-
         return map(lambda x: iif(x < 50, '1', '0'), sample(range(100), num_bits))
 
-    def binary_tournament(self, pop):
+    @staticmethod
+    def binary_tournament(pop):
         from random import randint
 
         i, j = randint(0, len(pop) - 1), randint(0, len(pop) - 1)
         while j == i:
             j = randint(0, len(pop) - 1)
         return iif(pop[i]['fitness'] > pop[j]['fitness'], pop[i], pop[j])
-
 
     def point_mutation(self, bitstring):
         from random import random
@@ -59,7 +59,6 @@ class GeneticAlgorithm(Strategy):
             bit = bitstring[i]
             child = child + iif(random() < self.p_mutation, iif(bit == '1', '0', '1'), bit)
         return child
-
 
     def uniform_crossover(self, parent1, parent2):
         from random import random, randint
@@ -77,14 +76,14 @@ class GeneticAlgorithm(Strategy):
             if i == len(selected) - 1:
                 ix = 0
             p2 = selected[ix]
-            child = {}
-            child['bitstring'] = self.uniform_crossover(p1['bitstring'], p2['bitstring'])
+            child = {
+                'bitstring': self.uniform_crossover(p1['bitstring'], p2['bitstring'])
+            }
             child['bitstring'] = self.point_mutation(child['bitstring'])
             children.append(child)
             if len(children) >= self.population_size:
                 break
         return children
-
 
     def execute(self, problem):
         population = []
@@ -121,5 +120,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-

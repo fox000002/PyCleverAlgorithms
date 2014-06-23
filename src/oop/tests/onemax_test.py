@@ -18,18 +18,18 @@ class TestOneMax(unittest.TestCase):
         self.g = GeneticAlgorithm()
 
     def test_onemax(self):
-        self.assertEqual(self.o.assess({'bitstring' : "0000"}), 0)
-        self.assertEqual(self.o.assess({'bitstring' : "0001"}), 1)
-        self.assertEqual(self.o.assess({'bitstring' : "0101"}), 2)
-        self.assertEqual(self.o.assess({'bitstring' : "1111"}), 4)
+        self.assertEqual(self.o.assess({'bitstring': "0000"}), 0)
+        self.assertEqual(self.o.assess({'bitstring': "0001"}), 1)
+        self.assertEqual(self.o.assess({'bitstring': "0101"}), 2)
+        self.assertEqual(self.o.assess({'bitstring': "1111"}), 4)
 
     def test_is_optimal(self):
-        self.assertEqual(True, self.o.is_optimal({'fitness' : 4}))
-        self.assertEqual(False, self.o.is_optimal({'fitness' : 3}))
-        self.assertEqual(False, self.o.is_optimal({'fitness' : 2}))
-        self.assertEqual(False, self.o.is_optimal({'fitness' : 1}))
-        self.assertEqual(False, self.o.is_optimal({'fitness' : 0}))
-        self.assertEqual(False, self.o.is_optimal({'fitness' : 5}))
+        self.assertEqual(True, self.o.is_optimal({'fitness': 4}))
+        self.assertEqual(False, self.o.is_optimal({'fitness': 3}))
+        self.assertEqual(False, self.o.is_optimal({'fitness': 2}))
+        self.assertEqual(False, self.o.is_optimal({'fitness': 1}))
+        self.assertEqual(False, self.o.is_optimal({'fitness': 0}))
+        self.assertEqual(False, self.o.is_optimal({'fitness': 5}))
 
     def test_random_bitstring(self):
         self.assertEqual(10, len(self.g.random_bitstring(10)))

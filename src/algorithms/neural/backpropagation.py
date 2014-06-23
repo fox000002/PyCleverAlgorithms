@@ -1,28 +1,32 @@
 #!/usr/bin/env python
 
 
+"""
+backpropagation ANN
+"""
+
+
 def iif(condition, true_part, false_part):
     return (condition and [true_part] or [false_part])[0]
 
 
-def random_vector(minmax):
+def random_vector(min_max):
     import random
-
-    return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), minmax)
+    return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), min_max)
 
 
 def initialize_weights(num_weights):
     import random
 
-    minmax = [[-random.random(), random.random()]] * num_weights
-    return random_vector(minmax)
+    min_max = [[-random.random(), random.random()]] * num_weights
+    return random_vector(min_max)
 
 
 def activate(weights, vector):
-    sum = weights[-1] * 1.0
+    sum_value = weights[-1] * 1.0
     for i in xrange(0, len(vector)):
-        sum = sum + weights[i] * vector[i]
-    return sum
+        sum_value += weights[i] * vector[i]
+    return sum_value
 
 
 def transfer(activation):
@@ -38,11 +42,11 @@ def forward_propagate(net, vector):
         layer = net[i]
         print layer
         if i == 0:
-            input = vector
+            input_values = vector
         else:
-            input = [net[i - 1][k]['output'] for k in xrange(0, len(net[i - 1]))]
+            input_values = [net[i - 1][k]['output'] for k in xrange(0, len(net[i - 1]))]
         for neuron in layer:
-            neuron['activation'] = activate(neuron['weights'], input)
+            neuron['activation'] = activate(neuron['weights'], input_values)
             neuron['output'] = transfer(neuron['activation'])
     return net[-1][0]['output']
 
@@ -58,26 +62,24 @@ def backward_propagate_error(network, expected_output):
         else:
             for k in xrange(0, len(network[index])):
                 neuron = network[index][k]
-                sum = 0.0
+                sum_value = 0.0
                 # only sum errors weighted by connection to the current k'th neuron
                 for next_neuron in network[index + 1]:
-                    sum = sum + (next_neuron['weights'][k] * next_neuron['delta'])
-                neuron['delta'] = sum * transfer_derivative(neuron['output'])
+                    sum_value = sum_value + (next_neuron['weights'][k] * next_neuron['delta'])
+                neuron['delta'] = sum_value * transfer_derivative(neuron['output'])
                 #print 'bpe == ' + str(neuron)
                 #print '--> backward_propagate_error'
                 #print network
 
 
 def calculate_error_derivatives_for_weights(net, vector):
-    for i in xrange(0, len(net)):
-        layer = net[i]
+    for i, layer in enumerate(net):
         if i == 0:
-            input = vector
+            input_values = vector
         else:
-            input = [net[i - 1][k]['output'] * len(net[i - 1]) for k in xrange(0, len(net[i - 1]))]
+            input_values = [net[i - 1][k]['output'] * len(net[i - 1]) for k in xrange(0, len(net[i - 1]))]
         for neuron in layer:
-            for j in xrange(0, len(input)):
-                signal = input[j]
+            for j, signal in enumerate(input_values):
                 neuron['deriv'][j] = neuron['deriv'][j] + neuron['delta'] * signal
                 neuron['deriv'][-1] = neuron['deriv'][-1] + neuron['delta'] * 1.0
 
@@ -105,7 +107,7 @@ def train_network(network, domain, num_inputs, iterations, lrate):
             calculate_error_derivatives_for_weights(network, vector)
             update_weights(network, lrate)
             if (epoch + 1) % 100 == 0:
-                print "> epoch=%d, Correct=%d/#{100*%d}" % (epoch + 1, correct, len(domain))
+                print "> epoch=%d, Correct=%d/%d" % (epoch + 1, correct, 100 * len(domain))
                 correct = 0
 
 

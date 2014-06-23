@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-# Self-Organizing Migrating Algorithm
+"""
+Self-Organizing Migrating Algorithm (SOMA)
+"""
 
 
 #Ackley Function

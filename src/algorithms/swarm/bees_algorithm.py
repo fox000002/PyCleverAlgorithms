@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-# Bees Algorithm
-
+"""
+Bees Algorithm
+"""
 
 def iif(condition, true_part, false_part):
     return (condition and [true_part] or [false_part])[0]

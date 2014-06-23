@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+LVQ
+"""
+
 
 def random_vector(minmax):
     import random

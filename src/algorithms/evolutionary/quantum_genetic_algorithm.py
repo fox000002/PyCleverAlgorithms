@@ -1,12 +1,13 @@
-#!/usr/bin/env python
+# !/usr/bin/env python
 
 """
 Quantum Genetic Algorithm
 """
 
+
 def main():
-	pass
+    pass
 
 
 if __name__ == '__main__':
-	main()
+    main()

@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+"""
+Compact Genetic Algorithm
+"""
+
+
 def main():
     pass
 

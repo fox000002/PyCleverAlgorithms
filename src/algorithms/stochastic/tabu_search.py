@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 """
+Tabu Search
 """
 
 
@@ -10,7 +11,6 @@ def iif(condition, true_part, false_part):
 
 def euc_2d(c1, c2):
     import math
-
     return round(math.sqrt((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2))
 
 
@@ -26,7 +26,6 @@ def cost(permutation, cities):
 
 def random_permutation(cities):
     import random
-
     perm = range(0, len(cities))
     for i in perm:
         r = random.randrange(len(perm) - i) + i
@@ -36,7 +35,6 @@ def random_permutation(cities):
 
 def stochastic_two_opt(parent):
     import random
-
     perm = parent[:]
     c1, c2 = random.randrange(len(perm)), random.randrange(len(perm))
     exclude = [c1]
