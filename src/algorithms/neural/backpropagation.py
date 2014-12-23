@@ -30,7 +30,8 @@ def activate(weights, vector):
 
 
 def transfer(activation):
-    return iif(activation >= 0, 1.0, 0.0)
+    import math
+    return 1.0 / (1.0 + math.exp(-activation))
 
 
 def transfer_derivative(output):
@@ -77,11 +78,11 @@ def calculate_error_derivatives_for_weights(net, vector):
         if i == 0:
             input_values = vector
         else:
-            input_values = [net[i - 1][k]['output'] * len(net[i - 1]) for k in xrange(0, len(net[i - 1]))]
+            input_values = [net[i - 1][k]['output'] for k in xrange(len(net[i - 1]))]
         for neuron in layer:
             for j, signal in enumerate(input_values):
-                neuron['deriv'][j] = neuron['deriv'][j] + neuron['delta'] * signal
-                neuron['deriv'][-1] = neuron['deriv'][-1] + neuron['delta'] * 1.0
+                neuron['deriv'][j] += neuron['delta'] * signal
+            neuron['deriv'][-1] += neuron['delta'] * 1.0
 
 
 def update_weights(network, lrate, mom=0.8):
@@ -123,14 +124,16 @@ def do_test_network(network, domain, num_inputs):
 
 
 def create_neuron(num_inputs):
-    return {'weights': initialize_weights(num_inputs + 1),
-            'last_delta': [0.0] * (num_inputs + 1),
-            'deriv': [0.0] * (num_inputs + 1)}
+    return {
+        'weights': initialize_weights(num_inputs + 1),
+        'last_delta': [0.0] * (num_inputs + 1),
+        'deriv': [0.0] * (num_inputs + 1)
+    }
 
 
 def execute(domain, num_inputs, iterations, num_nodes, lrate):
     network = []
-    network.append([create_neuron(num_inputs)] * num_nodes)
+    network.append([create_neuron(num_inputs) for i in xrange(num_nodes)])
     network.append([create_neuron(len(network[-1]) - 1)])
     print "Topology: %d " % num_inputs
     train_network(network, domain, num_inputs, iterations, lrate)
@@ -152,4 +155,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
