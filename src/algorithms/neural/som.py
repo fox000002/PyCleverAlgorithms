@@ -7,7 +7,6 @@ Self-Organized Map
 
 def random_vector(minmax):
     import random
-
     return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), minmax)
 
 
@@ -24,7 +23,6 @@ def initialize_vectors(domain, width, height):
 
 def euclidean_distance(c1, c2):
     import math
-
     return math.sqrt((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2)
 
 
@@ -117,4 +115,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
