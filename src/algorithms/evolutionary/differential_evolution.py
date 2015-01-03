@@ -72,7 +72,7 @@ def search(max_gens, search_space, pop_size, w, cr):
         pop.sort(key=lambda x: x['cost'])
         if pop[0]['cost'] < best['cost']:
             best = pop[0]
-        print ' > gen %d, fitness=%f' % (gen+1, best['cost'])
+        print ' > gen %d, cost=%f' % (gen+1, best['cost'])
     return best
 
 
@@ -92,4 +92,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

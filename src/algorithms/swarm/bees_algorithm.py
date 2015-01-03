@@ -41,7 +41,7 @@ def search_neigh(parent, neigh_size, patch_size, search_space):
         neigh.append(create_neigh_bee(parent['vector'], patch_size, search_space))
         for bee in neigh:
             bee['fitness'] = objective_function(bee['vector'])
-    return neigh.sort(lambda x: x['fitness'])[0]
+    return neigh.sort(key=lambda x: x['fitness'])[0]
 
 
 def create_scout_bees(search_space, num_scouts):
@@ -54,7 +54,7 @@ def search(max_gens, search_space, num_bees, num_sites, elite_sites, patch_size,
     for gen in xrange(max_gens):
         for bee in pop:
             bee['fitness'] = objective_function(bee['vector'])
-        pop.sort(lambda x: x['fitness'])
+        pop.sort(key=lambda x: x['fitness'])
         if best is None or pop[0]['fitness'] < best['fitness']:
             best = pop[0]
         next_gen = []
