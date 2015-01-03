@@ -14,7 +14,7 @@ class TestGeneticAlgorithm(unittest.TestCase):
 
     def test_iif(self):
         self.assertEqual(iif(1<50, "1", "0"), "1")
-        self.assertEqual(iif('0'=='1', 1, 0), 0)
+        self.assertEqual(iif('0' == '1', 1, 0), 0)
 
     def test_point_mutation(self):
         p = "1100"

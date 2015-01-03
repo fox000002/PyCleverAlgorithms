@@ -40,9 +40,7 @@ def search(max_iteration, num_bits):
         }
         neighbor['cost'] = one_max(neighbor['vector'])
         if neighbor['cost'] >= candidate['cost']:
-            #print candidate['vector']
             candidate = neighbor
-            #print candidate['vector']
         print ' > iteration %d, best=%d' % (iteration + 1, candidate['cost'])
         if candidate['cost'] == num_bits:
             break

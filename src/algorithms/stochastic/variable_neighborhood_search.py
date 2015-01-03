@@ -18,7 +18,6 @@ def euc_2d(c1, c2):
 def cost(permutation, cities):
     distance = 0
     for i in range(0, len(permutation)):
-        #print '-->', i, '=', permutation[i]
         c1 = permutation[i]
         c2 = permutation[iif(i == len(permutation) - 1, 0, i + 1)]
         distance += euc_2d(cities[c1], cities[c2])
@@ -40,9 +39,11 @@ def stochastic_two_opt(parent):
 
     perm = parent
     c1, c2 = randrange(len(perm)), randrange(len(perm))
-    exclude = [c1]
-    exclude.append(iif(c1 == 0, len(perm) - 1, c1 - 1))
-    exclude.append(iif(c1 == len(perm) - 1, 0, c1 + 1))
+    exclude = [
+        c1,
+        iif(c1 == 0, len(perm) - 1, c1 - 1),
+        iif(c1 == len(perm) - 1, 0, c1 + 1)
+    ]
     while c2 in exclude:
         c2 = randrange(len(perm))
     if c2 < c1:
@@ -56,8 +57,7 @@ def stochastic_two_opt(parent):
 def local_search(best, cities, max_no_improve, neighborhood):
     count = 0
     while count < max_no_improve:
-        candidate = {}
-        candidate['vector'] = best['vector'][:]
+        candidate = {'vector': best['vector'][:]}
         for i in xrange(neighborhood):
             stochastic_two_opt(candidate['vector'])
         candidate['cost'] = cost(candidate['vector'], cities)
@@ -69,20 +69,18 @@ def local_search(best, cities, max_no_improve, neighborhood):
 
 
 def search(cities, neighborhoods, max_no_improv, max_no_improv_ls):
-    best = {}
-    best['vector'] = random_permutation(cities)
+    best = {'vector': random_permutation(cities)}
     best['cost'] = cost(best['vector'], cities)
-    iter, count = 0, 0
+    iteration, count = 0, 0
     while count < max_no_improv:
         for neigh in neighborhoods:
-            candidate = {}
-            candidate['vector'] = best['vector'][:]
+            candidate = {'vector': best['vector'][:]}
             for i in xrange(neigh):
                 stochastic_two_opt(candidate['vector'])
             candidate['cost'] = cost(candidate['vector'], cities)
             candidate = local_search(candidate, cities, max_no_improv_ls, neigh)
-            print " > iteration %d, neigh=%d, candicate=%f, best=%f" % (iter+1, neigh, candidate['cost'], best['cost'])
-            iter += 1
+            print " > iteration %d, neigh=%d, candicate=%f, best=%f" % (iteration + 1, neigh, candidate['cost'], best['cost'])
+            iteration += 1
             if candidate['cost'] < best['cost']:
                 best, count = candidate, 0
                 print "New best, restarting neighborhood search."

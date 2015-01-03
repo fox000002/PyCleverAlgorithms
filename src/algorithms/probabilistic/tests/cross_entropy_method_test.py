@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-class TestAirs(unittest.TestCase):
+class TestCrossEntropyMethod(unittest.TestCase):
     def setUp(self):
         pass
 

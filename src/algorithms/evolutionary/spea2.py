@@ -72,19 +72,16 @@ def crossover(parent1, parent2, rate):
 def reproduce(selected, pop_size, p_cross):
     children = []
     for i, p1 in enumerate(selected):
-        #print i, len(selected)
         if i % 2 == 0:
             if i+1 == len(selected):
                 p2 = selected[0]
             else:
-                #print i+1, len(selected)
                 p2 = selected[i+1]
         else:
             p2 = selected[i-1]
         if i == len(selected) - 1:
             p2 = selected[0]
-        child = {}
-        child['bitstring'] = crossover(p1['bitstring'], p2['bitstring'], p_cross)
+        child = {'bitstring': crossover(p1['bitstring'], p2['bitstring'], p_cross)}
         child['bitstring'] = point_mutation(child['bitstring'], 1.0/len(child['bitstring']))
         children.append(child)
         if len(children) >= pop_size:

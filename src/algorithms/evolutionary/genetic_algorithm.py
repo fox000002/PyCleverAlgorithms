@@ -9,19 +9,17 @@ def iif(condition, true_part, false_part):
     return (condition and [true_part] or [false_part])[0]
 
 
-def onemax(bitstring):
+def one_max(bitstring):
     return sum(map(lambda x: iif(x == '1', 1, 0), bitstring))
 
 
 def random_bitstring(num_bits):
     from random import sample
-
     return map(lambda x: iif(x < 50, '1', '0'), sample(range(100), num_bits))
 
 
 def binary_tournament(pop):
     from random import randint
-
     i, j = randint(0, len(pop) - 1), randint(0, len(pop) - 1)
     while j == i:
         j = randint(0, len(pop) - 1)
@@ -30,7 +28,6 @@ def binary_tournament(pop):
 
 def point_mutation(bitstring, rate):
     from random import random
-
     child = ""
     for i in xrange(0, len(bitstring)):
         bit = bitstring[i]
@@ -40,7 +37,6 @@ def point_mutation(bitstring, rate):
 
 def crossover(parent1, parent2, rate):
     from random import random, randint
-
     if random() >= rate:
         return parent1
     point = 1 + randint(0, len(parent1) - 2)
@@ -69,14 +65,14 @@ def search(max_gens, num_bits, pop_size, p_crossover, p_mutation):
     for i in xrange(0, pop_size):
         population.append({'bitstring': random_bitstring(num_bits)})
     for c in population:
-        c['fitness'] = onemax(c['bitstring'])
+        c['fitness'] = one_max(c['bitstring'])
     population.sort(key=lambda x: x['fitness'])
     best = population[0]
     for gen in xrange(max_gens):
         selected = [binary_tournament(population) for i in xrange(0, pop_size)]
         children = reproduce(selected, pop_size, p_crossover, p_mutation)
         for c in children:
-            c['fitness'] = onemax(c['bitstring'])
+            c['fitness'] = one_max(c['bitstring'])
         children.sort(key=lambda x: x['fitness'])
         if children[0]['fitness'] > best['fitness']:
             best = children[0]

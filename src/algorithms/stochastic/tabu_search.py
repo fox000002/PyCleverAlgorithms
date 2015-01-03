@@ -10,15 +10,13 @@ def iif(condition, true_part, false_part):
 
 
 def euc_2d(c1, c2):
-    import math
-    return round(math.sqrt((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2))
+    from math import sqrt
+    return round(sqrt((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2))
 
 
 def cost(permutation, cities):
     distance = 0
-    for i in range(0, len(permutation)):
-        #print '-->', i, '=', permutation[i]
-        c1 = permutation[i]
+    for i, c1 in enumerate(permutation):
         c2 = permutation[iif(i == len(permutation) - 1, 0, i + 1)]
         distance += euc_2d(cities[c1], cities[c2])
     return distance
@@ -51,8 +49,7 @@ def stochastic_two_opt(parent):
 
 
 def is_tabu(permutation, tabu_list):
-    for i in xrange(0, len(permutation)):
-        c1 = permutation[i]
+    for i, c1 in enumerate(permutation):
         c2 = permutation[iif(i == len(permutation) - 1, 0, i + 1)]
         for forbidden_edge in tabu_list:
             if forbidden_edge == [c1, c2]:
@@ -107,11 +104,11 @@ def main():
                 [95, 260], [875, 920], [700, 500], [555, 815], [830, 485], [1170, 65],
                 [830, 610], [605, 625], [595, 360], [1340, 725], [1740, 245]]
     # algorithm configuration
-    max_iter = 100
+    max_iteration = 100
     tabu_list_size = 50
     max_candidates = 50
     # execute the algorithm
-    best = search(berlin52, tabu_list_size, max_candidates, max_iter)
+    best = search(berlin52, tabu_list_size, max_candidates, max_iteration)
     print 'Done. Best Solution: c=%d, v=%s' % (best['cost'], str(best['vector']))
 
 

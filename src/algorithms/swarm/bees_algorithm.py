@@ -50,7 +50,7 @@ def create_scout_bees(search_space, num_scouts):
 
 def search(max_gens, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees):
     best = None
-    pop = [create_random_bee(search_space)] * num_bees
+    pop = [create_random_bee(search_space) for i in xrange(num_bees)]
     for gen in xrange(max_gens):
         for bee in pop:
             bee['fitness'] = objective_function(bee['vector'])

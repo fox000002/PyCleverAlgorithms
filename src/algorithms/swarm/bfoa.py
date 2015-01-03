@@ -94,7 +94,7 @@ def search(search_space, pop_size, elim_disp_steps, repro_steps,
             if best is None or c_best['cost'] < best['cost']:
                 best = c_best
             print " > best fitness=%f, cost=%f" % (best['fitness'], best['cost'])
-            cells.sort(lambda x: x['sum_nutrients'])
+            cells.sort(key=lambda x: x['sum_nutrients'])
             cells = cells[0](pop_size/2) + cells[0](pop_size/2)
     for cell in cells:
         if random.random() <= p_eliminate:
