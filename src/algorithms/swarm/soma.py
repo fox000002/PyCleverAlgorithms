@@ -17,14 +17,12 @@ def objective_function(v):
 
 def random_bound(bound):
     import random
-
     return bound[0] + (bound[1] - bound[0]) * random.random()
 
 
-def random_vector(minmax):
+def random_vector(min_max):
     import random
-    #print minmax
-    return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), minmax)
+    return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), min_max)
 
 
 def frange(start, stop, step):

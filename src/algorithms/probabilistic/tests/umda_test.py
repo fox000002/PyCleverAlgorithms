@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-class TestAirs(unittest.TestCase):
+class TestUmda(unittest.TestCase):
     def setUp(self):
         pass
 

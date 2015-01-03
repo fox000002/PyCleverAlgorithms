@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Differential Evolution
+Differential Evolution (DE)
 """
 
 

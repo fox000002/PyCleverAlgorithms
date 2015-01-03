@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Dendritic Cell Algorithm
+Population-Based Incremental Learning
 """
 
 
