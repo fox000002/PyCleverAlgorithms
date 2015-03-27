@@ -17,7 +17,7 @@ def euc_2d(c1, c2):
 def cost(permutation, cities):
     distance = 0
     for i, c1 in enumerate(permutation):
-        c2 = iif(i == len(permutation)-1,  permutation[0], permutation[i+1])
+        c2 = permutation[iif(i == len(permutation) - 1, 0, i + 1)]
         distance += euc_2d(cities[c1], cities[c2])
     return distance
 
@@ -35,11 +35,13 @@ def stochastic_two_opt(perm):
     from random import randrange
     c1, c2 = randrange(len(perm)), randrange(len(perm))
     exclude = [c1, iif(c1 == 0, len(perm)-1, c1-1), iif(c1 == len(perm)-1,  0,  c1+1)]
-    while exclude.include(c2):
+    while c2 in exclude:
         c2 = randrange(len(perm))
     if c2 < c1:
         c1, c2 = c2, c1
-    perm[c1:c2+1] = perm[c1:c2+1].reverse()
+    r = perm[c1:c2]
+    r.reverse()
+    perm[c1:c2] = r
     return perm
 
 

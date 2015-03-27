@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Univariate Marginal Distribution Algorithm
+Univariate Marginal Distribution Algorithm (UMDA)
 """
 
 

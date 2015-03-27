@@ -6,7 +6,7 @@ import os
 os.sys.path.append("..")
 
 
-class TestBFOA(unittest.TestCase):
+class TestQuantumGenericAlgorithm(unittest.TestCase):
     def setUp(self):
         pass
 

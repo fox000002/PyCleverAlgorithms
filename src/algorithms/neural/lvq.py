@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
 """
-LVQ
+Learning Vector Quantization
 """
 
 
 def random_vector(minmax):
     import random
-
     return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), minmax)
 
 
@@ -23,7 +22,6 @@ def generate_random_pattern(domain):
 
 def initialize_vectors(domain, num_vectors):
     from random import randrange
-
     classes = domain.keys()
     codebook_vectors = []
     for i in xrange(num_vectors):
@@ -35,7 +33,6 @@ def initialize_vectors(domain, num_vectors):
 
 def euclidean_distance(c1, c2):
     import math
-
     return math.sqrt((c1[0] - c2[0]) ** 2 + (c1[1] - c2[1]) ** 2)
 
 
@@ -59,12 +56,12 @@ def update_codebook_vector(bmu, pattern, lrate):
 
 
 def train_network(codebook_vectors, domain, iterations, learning_rate):
-    for iter in xrange(iterations):
+    for iteration in xrange(iterations):
         pat = generate_random_pattern(domain)
         bmu = get_best_matching_unit(codebook_vectors, pat)
-        lrate = learning_rate * (1.0 - (float(iter) / iterations))
-        if iter % 10 == 0:
-            print "> iter=%d, got=%s, exp=%s" % (iter, bmu['label'], pat['label'])
+        lrate = learning_rate * (1.0 - (float(iteration) / iterations))
+        if iteration % 10 == 0:
+            print "> iter=%d, got=%s, exp=%s" % (iteration, bmu['label'], pat['label'])
         update_codebook_vector(bmu, pat, lrate)
 
 

@@ -14,9 +14,7 @@ def initialize_vectors(domain, width, height):
     codebook_vectors = []
     for x in range(width):
         for y in range(height):
-            codebook = {}
-            codebook['vector'] = random_vector(domain)
-            codebook['coord'] = [x, y]
+            codebook = {'vector': random_vector(domain), 'coord': [x, y]}
             codebook_vectors.append(codebook)
     return codebook_vectors
 
@@ -45,16 +43,15 @@ def get_vectors_in_neighborhood(bmu, codebook_vectors, neigh_size):
 
 def update_codebook_vector(codebook, pattern, lrate):
     for i in range(len(codebook['vector'])):
-        v = codebook['vector'][i]
         error = pattern[i]-codebook['vector'][i]
         codebook['vector'][i] += lrate * error
 
 
 def train_network(vectors, shape, iterations, l_rate, neighborhood_size):
-    for iter in range(iterations):
+    for iteration in range(iterations):
         pattern = random_vector(shape)
-        lrate = l_rate * (1.0-(float(iter)/float(iterations)))
-        neigh_size = neighborhood_size * (1.0-(float(iter)/float(iterations)))
+        lrate = l_rate * (1.0-(float(iteration)/float(iterations)))
+        neigh_size = neighborhood_size * (1.0-(float(iteration)/float(iterations)))
         bmu, dist = get_best_matching_unit(vectors, pattern)
         neighbors = get_vectors_in_neighborhood(bmu, vectors, neigh_size)
         for node in neighbors:
@@ -63,21 +60,21 @@ def train_network(vectors, shape, iterations, l_rate, neighborhood_size):
 
 
 def summarize_vectors(vectors):
-    minmax = [[1, 0]] * len(vectors[0]['vector'])
+    min_max = [[1, 0]] * len(vectors[0]['vector'])
     for c in vectors:
         for i in range(len(c['vector'])):
             v = c['vector'][i]
-            if v < minmax[i][0]:
-                minmax[i][0] = v
-            if v > minmax[i][1]:
-                minmax[i][1] = v
+            if v < min_max[i][0]:
+                min_max[i][0] = v
+            if v > min_max[i][1]:
+                min_max[i][1] = v
 
     s = ""
-    for i in range(len(minmax)):
-        bounds = minmax[i]
+    for i in range(len(min_max)):
+        bounds = min_max[i]
         s += "\n%d=%s" % (i, str(bounds))
     print("Vector details: %s" % s)
-    return minmax
+    return min_max
 
 
 def do_test_network(codebook_vectors, shape, num_trials=100):

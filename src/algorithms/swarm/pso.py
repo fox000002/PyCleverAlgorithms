@@ -11,7 +11,6 @@ def objective_function(v):
 
 def random_vector(min_max):
     from random import random
-    #print min_max
     return map(lambda x: x[0] + (x[1]-x[0]) * random(), min_max)
 
 

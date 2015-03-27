@@ -6,10 +6,9 @@ import os
 os.sys.path.append("..")
 
 
-class TestBFOA(unittest.TestCase):
+class TestCuckoo(unittest.TestCase):
     def setUp(self):
         pass
 
 if __name__ == '__main__':
     unittest.main()
-

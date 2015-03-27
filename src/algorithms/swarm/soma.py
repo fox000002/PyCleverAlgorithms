@@ -5,7 +5,7 @@ Self-Organizing Migrating Algorithm (SOMA)
 """
 
 
-#Ackley Function
+# Ackley Function
 def objective_function(v):
     from math import sin, cos, sqrt, exp
 
@@ -17,11 +17,13 @@ def objective_function(v):
 
 def random_bound(bound):
     import random
+
     return bound[0] + (bound[1] - bound[0]) * random.random()
 
 
 def random_vector(min_max):
     import random
+
     return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), min_max)
 
 
@@ -96,7 +98,7 @@ def soma_all_to_one(search_space, step, path_length, prt, min_div, migrations, p
                 # new position for all dimension
                 for j in xrange(0, dim):
                     tmp_individual[j] = start_position_of_individual[j] + \
-                        (leader_position[j] - start_position_of_individual[j]) * t * prt_vector[j]
+                                        (leader_position[j] - start_position_of_individual[j]) * t * prt_vector[j]
 
                 # check boundaries
                 for j in xrange(0, dim):
@@ -142,6 +144,7 @@ def soma_all_to_one(search_space, step, path_length, prt, min_div, migrations, p
 # (individuals migrate to other randomly selected individuals)
 def soma_all_to_one_randomly(search_space, step, path_length, prt, min_div, migrations, pop_size):
     import random
+
     dim = len(search_space)
     # generating population within the search space
     individuals = [[0] * dim] * pop_size
@@ -158,7 +161,7 @@ def soma_all_to_one_randomly(search_space, step, path_length, prt, min_div, migr
         if costValues[i] < xmin:
             xmin = costValues[i]
             indexOfLeader = i
-        #print '--- indexOfLeader : %d (%d)' % (indexOfLeader, pop_size)
+            #print '--- indexOfLeader : %d (%d)' % (indexOfLeader, pop_size)
 
     globalErrorHistory = [0] * migrations
     mig = 0
@@ -209,7 +212,7 @@ def soma_all_to_one_randomly(search_space, step, path_length, prt, min_div, migr
                 tmpCostValue = objective_function(tmpIndividual)
 
                 if tmpCostValue < costValues[i]:
-                    costValues[i] = tmpCostValue # store better CV and postion
+                    costValues[i] = tmpCostValue  # store better CV and postion
                     individuals[i] = tmpIndividual[:]
 
         # find the leader (individual with the lowest cost value)
@@ -218,7 +221,6 @@ def soma_all_to_one_randomly(search_space, step, path_length, prt, min_div, migr
             if costValues[i] < xmin:
                 xmin = costValues[i]
                 indexOfLeader = i
-
 
         globalErrorHistory[mig] = costValues[indexOfLeader]
 
@@ -245,6 +247,7 @@ def soma_all_to_one_randomly(search_space, step, path_length, prt, min_div, migr
 
 def soma_all_to_all(search_space, step, pathLength, prt, minDiv, migrations, pop_size):
     import random
+
     dim = len(search_space)
 
     # generating population within the search space
@@ -279,9 +282,9 @@ def soma_all_to_all(search_space, step, pathLength, prt, minDiv, migrations, pop
             for indexOfTarget in xrange(0, pop_size):
                 if indexOfTarget == i:
                     if indexOfTarget != pop_size - 1:
-                        indexOfTarget = indexOfTarget + 1 # don't migrate to itself
+                        indexOfTarget = indexOfTarget + 1  # don't migrate to itself
                     else:
-                        stopMigrations = True #  targetIndividual is the last one and shall migrate to itself
+                        stopMigrations = True  #  targetIndividual is the last one and shall migrate to itself
                         break
 
                 if stopMigrations:
@@ -307,7 +310,9 @@ def soma_all_to_all(search_space, step, pathLength, prt, minDiv, migrations, pop
 
                     # new positon for all dimension
                     for j in xrange(0, dim):
-                        tmpIndividual[j] = startPositionOfIndividual[j] + (targetPosition[j] - startPositionOfIndividual[j]) * t * PRTVector[j]
+                        tmpIndividual[j] = startPositionOfIndividual[j] + (
+                                                                          targetPosition[j] - startPositionOfIndividual[
+                                                                              j]) * t * PRTVector[j]
 
                     # check boundaries
                     for j in xrange(0, dim):
@@ -317,7 +322,7 @@ def soma_all_to_all(search_space, step, pathLength, prt, minDiv, migrations, pop
                     tmpCostValue = objective_function(tmpIndividual)
 
                     if tmpCostValue < costValues[i]:
-                        costValues[i] = tmpCostValue # store better CV and postion
+                        costValues[i] = tmpCostValue  # store better CV and postion
                         individuals[i] = tmpIndividual[:]
 
         # find the leader (individual with the lowest cost value)
@@ -384,9 +389,9 @@ def soma_all_to_all_adaptive(search_space, step, pathLength, prt, minDiv, migrat
             for indexOfTarget in xrange(0, pop_size):
                 if indexOfTarget == i:
                     if indexOfTarget != pop_size - 1:
-                        indexOfTarget = indexOfTarget + 1 # don't migrate to itself
+                        indexOfTarget = indexOfTarget + 1  # don't migrate to itself
                     else:
-                        stopMigrations = True #  targetIndividual is the last one and shall migrate to itself
+                        stopMigrations = True  #  targetIndividual is the last one and shall migrate to itself
                         break
 
                 if stopMigrations:
@@ -415,7 +420,9 @@ def soma_all_to_all_adaptive(search_space, step, pathLength, prt, minDiv, migrat
 
                     # new positon for all dimension
                     for j in xrange(0, dim):
-                        tmpIndividual[j] = startPositionOfIndividual[j] + (targetPosition[j] - startPositionOfIndividual[j]) * t * PRTVector[j]
+                        tmpIndividual[j] = startPositionOfIndividual[j] + (
+                                                                          targetPosition[j] - startPositionOfIndividual[
+                                                                              j]) * t * PRTVector[j]
 
                     # check boundaries
                     for j in xrange(0, dim):
@@ -425,7 +432,7 @@ def soma_all_to_all_adaptive(search_space, step, pathLength, prt, minDiv, migrat
                     tmpCostValue = objective_function(tmpIndividual)
 
                     if tmpCostValue < costValues[i]:
-                        costValues[i] = tmpCostValue # store better CV and postion
+                        costValues[i] = tmpCostValue  # store better CV and postion
                         individuals[i] = tmpIndividual[:]
 
 
@@ -478,6 +485,7 @@ def main():
 
     try:
         import matplotlib.pyplot as plt
+
         plt.plot(best['history'])
         plt.show()
     except:
@@ -491,6 +499,7 @@ def main():
 
     try:
         import matplotlib.pyplot as plt
+
         plt.plot(best['history'])
         plt.show()
     except:
@@ -504,6 +513,7 @@ def main():
 
     try:
         import matplotlib.pyplot as plt
+
         plt.plot(best['history'])
         plt.show()
     except:
@@ -517,10 +527,12 @@ def main():
 
     try:
         import matplotlib.pyplot as plt
+
         plt.plot(best['history'])
         plt.show()
     except:
         print 'Please install matplot to show convergence history'
+
 
 if __name__ == "__main__":
     main()

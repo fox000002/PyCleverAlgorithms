@@ -95,7 +95,7 @@ def search(search_space, pop_size, elim_disp_steps, repro_steps,
                 best = c_best
             print " > best fitness=%f, cost=%f" % (best['fitness'], best['cost'])
             cells.sort(key=lambda x: x['sum_nutrients'])
-            cells = cells[0](pop_size/2) + cells[0](pop_size/2)
+            cells = cells[0][pop_size/2] + cells[0][pop_size/2]
     for cell in cells:
         if random.random() <= p_eliminate:
             cell['vector'] = random_vector(search_space)

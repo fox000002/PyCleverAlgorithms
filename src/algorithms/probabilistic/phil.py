@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Population-Based Incremental Learning
+Population-Based Incremental Learning (PBIL)
 """
 
 
