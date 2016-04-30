@@ -43,6 +43,15 @@ def random_vector(min_max):
     return map(lambda x: x[0] + (x[1]-x[0]) * random(), min_max)
 
 
+def random_permutation(n):
+    from random import randrange
+    perm = range(n)
+    for i in xrange(len(perm)):
+        r = randrange(len(perm)-i) + i
+        perm[r], perm[i] = perm[i], perm[r]
+    return perm
+
+
 def get_best_nest(nests, new_nests):
     for i in xrange(len(nests)):
         if new_nests[i]['cost'] <= nests[i]['cost']:
@@ -57,6 +66,35 @@ def get_best_nest(nests, new_nests):
 
 # Get cuckoos by random walk
 def get_cuckoos(nests, best_nests, search_space):
+    from math import gamma, sin, pi
+    from random import randint
+    # Levy flights
+    n = len(nests)
+    # Levy exponent and coefficient
+    beta = 3.0/2
+    sigma = (gamma(1+beta)*sin(pi*beta/2)/(gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta)
+
+    for j in xrange(n):
+        s = nests[j]
+        # This is a simple way of implementing Levy flights
+        # For standard random walks, use step=1;
+        # Levy flights by Mantegna's algorithm
+        u = randint(len(s["vector"])) * sigma
+        v = randint(len(s["vector"]))
+        # step = u./abs(v).^(1/beta)
+
+        # In the next equation, the difference factor (s-best) means that
+        # when the solution is the best solution, it remains unchanged.
+        # stepsize=0.01*step.*(s-best);
+        # Here the factor 0.01 comes from the fact that L/100 should the typical
+        # step size of walks/flights where L is the typical lenghtscale;
+        # otherwise, Levy flights may become too aggresive/efficient,
+        # which makes new solutions (even) jump out side of the design domain
+        # (and thus wasting evaluations).
+        # Now the actual random walks or flights
+        # s=s+stepsize.*randn(size(s));
+        # Apply simple bounds/limits
+        # nest(j,:)=simplebounds(s,Lb,Ub);
     return nests
 
 
@@ -91,7 +129,7 @@ def simple_bound(v, search_space):
 def search(search_space, max_iter, num_nests=25, discovery_rate=0.25, tol=1.0e-5):
     best = None
     # Random initial solutions
-    nests = [{'vector': [random_vector(x) for x in search_space]} for _ in xrange(num_nests)]
+    nests = [{'vector': random_vector(search_space)} for _ in xrange(num_nests)]
     for nest in nests:
         nest['cost'] = objective_function(nest['vector'])
 
@@ -102,6 +140,7 @@ def search(search_space, max_iter, num_nests=25, discovery_rate=0.25, tol=1.0e-5
         # Generate new solutions (but keep the current best)
         new_nests = get_cuckoos(nests, best, search_space)
         nest = get_best_nest(nests, new_nests)
+
         # Discovery and randomization
         new_nests = empty_nests(nests, search_space, discovery_rate)
 
