@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Multi-Island Genetic Algorithm
+Multi-Island Genetic Algorithm (MIGA)
 """
 
 

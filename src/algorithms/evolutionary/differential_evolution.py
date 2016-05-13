@@ -10,7 +10,7 @@ def iif(condition, true_part, false_part):
 
 
 def objective_function(v):
-    return sum(map(lambda x: x**2, v))
+    return sum(map(lambda x: (x-1.0)**2, v))
 
 
 def random_vector(min_max):
@@ -59,7 +59,7 @@ def select_population(parents, children):
 
 
 def search(max_gens, search_space, pop_size, w, cr):
-    pop = map(lambda i: {'vector' : random_vector(search_space)}, xrange(0, pop_size))
+    pop = map(lambda i: {'vector': random_vector(search_space)}, xrange(0, pop_size))
     for p in pop:
         p['cost'] = objective_function(p['vector'])
     pop.sort(key=lambda x: x['cost'])

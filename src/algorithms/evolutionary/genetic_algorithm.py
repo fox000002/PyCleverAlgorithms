@@ -55,7 +55,7 @@ def reproduce(selected, pop_size, p_cross, p_mutation):
         child['bitstring'] = crossover(p1['bitstring'], p2['bitstring'], p_cross)
         child['bitstring'] = point_mutation(child['bitstring'], p_mutation)
         children.append(child)
-        if (len(children) >= pop_size):
+        if len(children) >= pop_size:
             break
     return children
 
