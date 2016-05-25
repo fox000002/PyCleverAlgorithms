@@ -11,7 +11,7 @@ def objective_function(v):
 
 def random_vector(min_max):
     from random import random
-    return map(lambda x: x[0] + (x[1]-x[0]) * random(), min_max)
+    return list(map(lambda x: x[0] + (x[1]-x[0]) * random(), min_max))
 
 
 def create_particle(search_space, vel_space):
@@ -36,7 +36,7 @@ def get_global_best(population, current_best=None):
 
 def update_velocity(particle, global_best, max_v, c1, c2, omega):
     import random
-    for i in xrange(0, len(particle['velocity'])):
+    for i in range(len(particle['velocity'])):
         v = particle['velocity'][i]
         v1 = c1 * random.random() * (particle['b_position'][i] - particle['position'][i])
         v2 = c2 * random.random() * (global_best['position'][i] - particle['position'][i])
@@ -48,7 +48,7 @@ def update_velocity(particle, global_best, max_v, c1, c2, omega):
 
 
 def update_position(part, bounds):
-    for i in xrange(0, len(part['position'])):
+    for i in range(len(part['position'])):
         v = part['position'][i]
         part['position'][i] = v + part['velocity'][i]
         if part['position'][i] > bounds[i][1]:
@@ -67,16 +67,16 @@ def update_best_position(particle):
 
 
 def search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2, omega):
-    pop = [create_particle(search_space, vel_space) for i in xrange(pop_size)]
+    pop = [create_particle(search_space, vel_space) for i in range(pop_size)]
     global_best = get_global_best(pop)
-    for gen in xrange(0, max_gens):
+    for gen in range(max_gens):
         for particle in pop:
             update_velocity(particle, global_best, max_vel, c1, c2, omega)
             update_position(particle, search_space)
             particle['cost'] = objective_function(particle['position'])
             update_best_position(particle)
         global_best = get_global_best(pop, global_best)
-        print " > gen %d, fitness=%f" % (gen + 1, global_best['cost'])
+        print(" > gen %d, fitness=%f" % (gen + 1, global_best['cost']))
     return global_best
 
 
@@ -93,7 +93,7 @@ def main():
     omega = 0.5
     # execute the algorithm
     best = search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2, omega)
-    print 'Done. Best Solution: c=%f, v=%s' % (best['cost'], str(best['position']))
+    print('Done. Best Solution: c=%f, v=%s' % (best['cost'], str(best['position'])))
 
 
 if __name__ == "__main__":
