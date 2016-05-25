@@ -65,9 +65,9 @@ def get_best_nest(nests, new_nests):
 
 
 # Get cuckoos by random walk
-def get_cuckoos(nests, best_nests, search_space):
+def get_cuckoos(nests, best_nest, search_space):
     from math import gamma, sin, pi
-    from random import randint
+    from random import randint, random
     # Levy flights
     n = len(nests)
     # Levy exponent and coefficient
@@ -75,17 +75,19 @@ def get_cuckoos(nests, best_nests, search_space):
     sigma = (gamma(1+beta)*sin(pi*beta/2)/(gamma((1+beta)/2)*beta*2**((beta-1)/2)))**(1/beta)
 
     for j in xrange(n):
-        s = nests[j]
+        s = nests[j]['vector']
         # This is a simple way of implementing Levy flights
         # For standard random walks, use step=1;
         # Levy flights by Mantegna's algorithm
-        u = randint(len(s["vector"])) * sigma
-        v = randint(len(s["vector"]))
+        # u=randn(size(s))*sigma;
+        # v=randn(size(s));
         # step = u./abs(v).^(1/beta)
+        step = [random() * sigma / abs(random())**(1/beta) for _ in range(len(s))]
 
         # In the next equation, the difference factor (s-best) means that
         # when the solution is the best solution, it remains unchanged.
         # stepsize=0.01*step.*(s-best);
+        stepsize = [0.01 * step[i] * (s[i]-best_nest['vector'][i]) for i in xrange(len(step))]
         # Here the factor 0.01 comes from the fact that L/100 should the typical
         # step size of walks/flights where L is the typical lenghtscale;
         # otherwise, Levy flights may become too aggresive/efficient,
@@ -93,8 +95,13 @@ def get_cuckoos(nests, best_nests, search_space):
         # (and thus wasting evaluations).
         # Now the actual random walks or flights
         # s=s+stepsize.*randn(size(s));
+        for i in xrange(len(s)):
+            s[i] += stepsize[i] * random()
+
         # Apply simple bounds/limits
-        # nest(j,:)=simplebounds(s,Lb,Ub);
+        simple_bound(s, search_space)
+
+        nests[j]['vector'] = s
     return nests
 
 
@@ -110,10 +117,16 @@ def empty_nests(nests, search_space, discovery_rate):
     # be related to the difference in solutions.  Therefore, it is a good idea
     # to do a random walk in a biased way with some random step sizes.
     # New solution by biased/selective random walks
+    # stepsize=rand*(nest(randperm(n),:)-nest(randperm(n),:));
+    # new_nest=nest+stepsize.*K;
+    r1 = random_permutation(n)
+    r2 = random_permutation(n)
 
-    for nest in nests:
-        nest['vector'] = None
-        simple_bound(nest['vector'], search_space)
+    new_nests = None
+
+    for j in xrange(len(new_nests)):
+        nests[j]['vector'] = new_nests[j]['vector']
+        simple_bound(nests['vector'], search_space)
 
     return nests
 
@@ -127,7 +140,6 @@ def simple_bound(v, search_space):
 
 
 def search(search_space, max_iter, num_nests=25, discovery_rate=0.25, tol=1.0e-5):
-    best = None
     # Random initial solutions
     nests = [{'vector': random_vector(search_space)} for _ in xrange(num_nests)]
     for nest in nests:

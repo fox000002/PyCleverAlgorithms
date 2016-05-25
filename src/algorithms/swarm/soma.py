@@ -17,18 +17,15 @@ def objective_function(v):
 
 def random_bound(bound):
     import random
-
     return bound[0] + (bound[1] - bound[0]) * random.random()
 
 
 def random_vector(min_max):
     import random
-
     return map(lambda x: x[0] + (x[1] - x[0]) * random.random(), min_max)
 
 
 def frange(start, stop, step):
-    #assert step > 0.0
     total = start
     compo = 0.0
     while total <= stop:
@@ -83,7 +80,6 @@ def soma_all_to_one(search_space, step, path_length, prt, min_div, migrations, p
 
             # Let's migrate!
             for t in frange(0.0, path_length, step):
-                #print 'path : %f' % t
                 # Generate new PRTVector for each step of this individual
                 prt_vector_contain_only_zero = True
                 prt_vector = [0] * dim

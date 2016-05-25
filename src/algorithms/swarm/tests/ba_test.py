@@ -5,9 +5,9 @@ import os
 
 os.sys.path.append("..")
 
-from cuckoo import objective_function
+from ba import objective_function
 
-class TestCuckoo(unittest.TestCase):
+class TestBA(unittest.TestCase):
     def setUp(self):
         self.data = [1, 2]
 
@@ -24,3 +24,4 @@ class TestCuckoo(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

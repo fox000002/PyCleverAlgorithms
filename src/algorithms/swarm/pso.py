@@ -34,13 +34,13 @@ def get_global_best(population, current_best=None):
     return current_best
 
 
-def update_velocity(particle, global_best, max_v, c1, c2):
+def update_velocity(particle, global_best, max_v, c1, c2, omega):
     import random
     for i in xrange(0, len(particle['velocity'])):
         v = particle['velocity'][i]
         v1 = c1 * random.random() * (particle['b_position'][i] - particle['position'][i])
         v2 = c2 * random.random() * (global_best['position'][i] - particle['position'][i])
-        particle['velocity'][i] = v + v1 + v2
+        particle['velocity'][i] = v*omega + v1 + v2
         if particle['velocity'][i] > max_v:
             particle['velocity'][i] = max_v
         if particle['velocity'][i] < -max_v:
@@ -66,12 +66,12 @@ def update_best_position(particle):
     particle['b_position'] = particle['position'][:]
 
 
-def search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2):
+def search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2, omega):
     pop = [create_particle(search_space, vel_space) for i in xrange(pop_size)]
     global_best = get_global_best(pop)
     for gen in xrange(0, max_gens):
         for particle in pop:
-            update_velocity(particle, global_best, max_vel, c1, c2)
+            update_velocity(particle, global_best, max_vel, c1, c2, omega)
             update_position(particle, search_space)
             particle['cost'] = objective_function(particle['position'])
             update_best_position(particle)
@@ -90,8 +90,9 @@ def main():
     pop_size = 50
     max_vel = 100.0
     c1, c2 = 2.0, 2.0
+    omega = 0.5
     # execute the algorithm
-    best = search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2)
+    best = search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2, omega)
     print 'Done. Best Solution: c=%f, v=%s' % (best['cost'], str(best['position']))
 
 
