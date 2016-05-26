@@ -54,6 +54,7 @@ def random_permutation(n):
 
 def get_best_nest(nests, new_nests):
     for i in xrange(len(nests)):
+        new_nests[i]['cost'] = objective_function(new_nests[i]['vector'])
         if new_nests[i]['cost'] <= nests[i]['cost']:
             nests[i] = new_nests[i]
 
@@ -67,7 +68,7 @@ def get_best_nest(nests, new_nests):
 # Get cuckoos by random walk
 def get_cuckoos(nests, best_nest, search_space):
     from math import gamma, sin, pi
-    from random import randint, random
+    from random import random
     # Levy flights
     n = len(nests)
     # Levy exponent and coefficient
@@ -110,7 +111,7 @@ def empty_nests(nests, search_space, discovery_rate):
     from random import random
     # A fraction of worse nests are discovered with a probability pa
     n = len(nests)
-    K = [random() > discovery_rate for _ in xrange(n)]
+    K = [iif(random() > discovery_rate, 1, 0) for _ in xrange(n)]
 
     # In the real world, if a cuckoo's egg is very similar to a host's eggs, then
     # this cuckoo's egg is less likely to be discovered, thus the fitness should
@@ -122,13 +123,23 @@ def empty_nests(nests, search_space, discovery_rate):
     r1 = random_permutation(n)
     r2 = random_permutation(n)
 
-    new_nests = None
+    new_nests = []
+
+    r = random()
+    for i in range(n):
+        nest1_v = nests[r1[i]]['vector']
+        nest2_v = nests[r2[i]]['vector']
+        new_nest = {
+            'vector': nests[i]['vector'][:]
+        }
+        for m in range(len(new_nest['vector'])):
+            new_nest['vector'][m] += r * (nest1_v[m]-nest2_v[m])*K[i]
+        new_nests.append(new_nest)
 
     for j in xrange(len(new_nests)):
-        nests[j]['vector'] = new_nests[j]['vector']
-        simple_bound(nests['vector'], search_space)
+        simple_bound(new_nests[j]['vector'], search_space)
 
-    return nests
+    return new_nests
 
 
 def simple_bound(v, search_space):
@@ -163,6 +174,7 @@ def search(search_space, max_iter, num_nests=25, discovery_rate=0.25, tol=1.0e-5
         if nest['cost'] < best['cost']:
             best = nest
 
+        print best
     return best
 
 

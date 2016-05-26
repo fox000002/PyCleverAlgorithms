@@ -5,7 +5,7 @@ import os
 
 os.sys.path.append("..")
 
-from ba import objective_function
+from ba import objective_function, random_vector, create_bat
 
 class TestBA(unittest.TestCase):
     def setUp(self):
@@ -22,6 +22,29 @@ class TestBA(unittest.TestCase):
         # optima
         self.assertEqual(0, objective_function([0, 0]))
 
+    def test_random_vector(self):
+        min_max = [[1, 2], [2, 3]]
+
+        self.assertEqual(min_max[0][0], 1)
+
+        rv = random_vector(min_max)
+
+        self.assertEqual(len(rv), 2)
+        self.assertTrue(min_max[0][0] <= rv[0] <= min_max[0][1])
+        self.assertTrue(min_max[1][0] <= rv[1] <= min_max[1][1])
+
+    def test_create_bat(self):
+        rs = create_bat([[-1, 1], [-1, 1]])
+        self.assertIsNotNone(rs['position'])
+        self.assertIsNotNone(rs['cost'])
+        self.assertIsNotNone(rs['velocity'])
+        self.assertEqual(2, len(rs['position']))
+        self.assertEqual(2, len(rs['velocity']))
+
+    def test_get_global_best(self):
+        pass
+
+
+
 if __name__ == '__main__':
     unittest.main()
-

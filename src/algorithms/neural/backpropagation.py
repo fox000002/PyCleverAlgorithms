@@ -41,7 +41,7 @@ def transfer_derivative(output):
 def forward_propagate(net, vector):
     for i in xrange(0, len(net)):
         layer = net[i]
-        print layer
+        #print layer
         if i == 0:
             input_values = vector
         else:
