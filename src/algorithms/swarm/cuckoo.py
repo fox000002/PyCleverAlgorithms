@@ -174,7 +174,7 @@ def search(search_space, max_iter, num_nests=25, discovery_rate=0.25, tol=1.0e-5
         if nest['cost'] < best['cost']:
             best = nest
 
-        print best
+        print(" > iter %d, fitness=%f" % (iteration + 1, best['cost']))
     return best
 
 
