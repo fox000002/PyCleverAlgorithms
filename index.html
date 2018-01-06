@@ -209,6 +209,69 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-Electron-Quick-Start" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/PyCleverAlgorithms/2018/01/06/Electron-Quick-Start/" class="article-date">
+      <time datetime="2018-01-06T14:41:44.000Z" itemprop="datePublished">2018-01-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/PyCleverAlgorithms/2018/01/06/Electron-Quick-Start/">Electron Quick Start</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>Electron is a good choice to build cross platform desktop apps with JavaScript, HTML, and CSS. In this article, I will guide you to install all necessary packages, get <a href="https://github.com/electron/electron-quick-start" target="_blank" rel="noopener">electron-quick-start</a> running and create the dist package.</p>
+<hr>
+<h2 id="node-js"><a href="#node-js" class="headerlink" title="node.js"></a><a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">node.js</a></h2><p>First, you need install node.js. The v6.9.1 is used in my case.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ node --version</span><br><span class="line">v6.9.1</span><br></pre></td></tr></table></figure>
+<h2 id="Fetch-code"><a href="#Fetch-code" class="headerlink" title="Fetch code"></a>Fetch code</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/electron/electron-quick-start.git</span><br></pre></td></tr></table></figure>
+<h2 id="Install-packages-and-run"><a href="#Install-packages-and-run" class="headerlink" title="Install packages and run"></a>Install packages and run</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">cd</span> electron-quick-start</span><br><span class="line">npm install</span><br><span class="line">npm start</span><br></pre></td></tr></table></figure>
+<p>In China, the installation process may suspend due to the problem of downloading electron binary package (version 1.7.10 in my case), even with taobao registry enabled. One possible workaround is fetching the package directly and put in the cache directory, so the script install.js can uncompress the package without downloading.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ~/.electron</span><br><span class="line">wget https://npm.taobao.org/mirrors/electron/1.7.10/electron-v1.7.10-darwin-x64.zip</span><br></pre></td></tr></table></figure>
+<h2 id="Create-the-dist-package"><a href="#Create-the-dist-package" class="headerlink" title="Create the dist package"></a>Create the dist package</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">electron-packager electron-quick-start/ quick-start</span><br></pre></td></tr></table></figure>
+
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-About-Lambda-Architecture" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
